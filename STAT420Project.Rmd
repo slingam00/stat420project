@@ -1,0 +1,366 @@
+---
+title: "stat420project"
+author: "Pawandeep Kaur"
+date: "11/10/2021"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+##Introduction to the data set and research problems
+
+The COVID-19 pandemic has dramatically affected the daily lives of everyone in the world. As such, our group wanted to investigate the toll the pandemic has taken on different places across the globe. The dataset we have selected consists of worldwide COVID-19 data, broken down for each country, and broken down for each state within the US. The attributes within this data set are confirmed cases, deaths, recoveries, the rate of increase, and their corresponding dates. Within this dataset, we plan to use both the countries-aggregated.csv and worldwide-aggregated.csv to combine all the attributes and discover the relationships and trends within this combined data set.
+
+Specifically, we want to research a few areas like, are confirmed COVID-19 cases correlated with deaths? And if so, is there a lag between high confirmed COVID-19 cases and high death cases? Additionally, we want to look at how the trend of COVID-19 cases change based on geographic location around the world. This delves into how strict countries were in quarantining and lockdown, so it would be interesting to see if there was an optimal quarantining method. Furthermore, we also want to look at if we can predict future COVID-19 cases using forecasting. Finally, we want to look at the times of the year where COVID-19 cases and deaths occur the most and if it is seasonal.
+
+##Exploratory Data Analysis
+
+```{r reading in data}
+library(readr)
+library(ggplot2)
+library(astsa)
+covid = read_csv("/Users/pawandeepkaur/Desktop/STAT420/worldwide-aggregate.csv")
+countries<- read_csv("/Users/pawandeepkaur/Desktop/STAT420/countries-aggregated.csv")
+world <- read_csv("/Users/pawandeepkaur/Desktop/STAT420/worldwide-aggregate.csv")
+```
+
+```{r exploratory}
+ggplot(covid, aes(x=Date, y=Deaths)) +
+  geom_line() + xlab("Date") + ylab("Deaths") + 
+  ggtitle("COVID Deaths Over Time")
+
+ggplot(covid, aes(x=Date, y=Confirmed)) +
+  geom_line() + xlab("Date") + ylab("Confirmed Cases") + 
+  ggtitle("COVID Confirmed Cases Over Time")
+#We can see that over time the deaths are increasing as well as the confirmed COVID cases. 
+```
+
+
+```{r detrending through regression and differencing}
+y=world$Confirmed
+x=world$Deaths
+time=world$Date
+
+y.lm=lm(y~time)
+plot(world$Date,y, type='l', xlab='time', ylab='Confirmed')
+abline(reg=y.lm)
+
+x.lm=lm(x~time)
+plot(world$Date,x, type='l', xlab='time', ylab='Deaths')
+abline(reg=x.lm)
+
+par(mfrow=c(2,2))
+res=resid(x.lm)
+plot(res, type='l', ylab = 'residual', main='Residual plot')
+plot(diff(res), type='l', ylab="difference", main = 'First order differencing')
+acf(res, main='Residual')
+acf(diff(res), main="Differenced residual")
+
+par(mfrow=c(2,2))
+res=resid(y.lm)
+plot(res, type='l', ylab = 'residual', main='Residual plot')
+plot(diff(res), type='l', ylab="difference", main = 'First order differencing')
+acf(res, main='Residual')
+acf(diff(res), main="Differenced residual")
+
+
+```
+
+```{r first, second, and seasonal differencing }
+#1st difference, acf, pacf
+par(mfrow=c(2,2))
+acf(diff(y), main='ACF Confirmed')
+pacf(diff(y), main='PACF Confirmed')
+acf(diff(x), main='ACF Deaths')
+pacf(diff(x), main='PACF Deaths')
+
+par(mfrow=c(1,3))
+#plot 2nd difference, acf, pacf
+plot(diff(diff(y)), type='l')
+acf(diff(diff(y)))
+pacf(diff(diff(y)))
+
+#plot 1st seasonal difference, acf, pacf
+plot(diff(diff(diff(y)), 7))
+acf(diff(diff(diff(y)), 7))
+fin = diff(diff(diff(y)), 7)
+pacf(fin)
+
+```
+
+```{r moving averages}
+# Moving averages - day 50, 100, and 200:
+covid$Date <- as.Date(covid$Date, "%Y-%m-%d")
+plot(covid$Date, covid$Deaths, xaxt="n", type="l", col="gray", lwd=2)
+axis(1, covid$Date, format(covid$Date, "%m-%Y"))
+lines(covid$Date, zoo::rollmean(covid$Deaths, 50, align='right', fill=NA), col='red', lwd=2)
+lines(covid$Date, zoo::rollmean(covid$Deaths, 100, align='right', fill=NA), col='blue', lwd=2)
+lines(covid$Date, zoo::rollmean(covid$Deaths, 200, align='right', fill=NA), col='green', lwd=2)
+
+```
+
+```{r exploratory model analysis}
+library(xts)
+covid_ts = xts(covid$Deaths, as.Date(covid$Date, format='%Y-%m-%d'))
+
+par(mfrow=c(2,2))
+plot(covid_ts)
+plot(log(covid_ts))
+plot(diff(log(covid_ts)))
+plot(diff(diff(log(covid_ts))))
+y = diff(diff(log(covid_ts)))
+
+par(mfrow=c(1, 2))
+acf(y, lag.max=10, na.action=na.pass)
+pacf(y, lag.max=10, na.action=na.pass)
+
+
+```
+From this we can see that the data is not normally distributed and it becomes stationary after being differenced twice. We can also see that there is no clear cut off for the ACF nor PACF. 
+
+```{r MA model}
+MA = arima(covid_ts, order = c(0, 0, 1))
+MA_fit = covid_ts - residuals(MA)
+plot.ts(covid_ts, ylab="Deaths", main="COVID Deaths Over Time", lwd=2)
+points(MA_fit, type = "l", col = "red", lty = 2, lwd=2)
+
+MA_diff = arima(covid_ts, order = c(0, 1, 1))
+MA_diff_fit = covid_ts - residuals(MA_diff)
+plot.ts(covid_ts, ylab="Deaths", main="COVID Deaths Over Time", lwd=2)
+points(MA_diff_fit, type = "l", col = "green", lty = 2, lwd=2)
+```
+For the MA model we look at the date vs deaths. We can see that the MA(1) fit is not very good and that it looks much better after differencing. 
+
+```{r AR model}
+plot.ts(covid_ts, ylab="Deaths", main="COVID Deaths Over Time", lwd=2)
+AR <- arima(covid_ts, order = c(1,0,0))
+AR_fit <- covid_ts - residuals(AR)
+points(AR_fit, type = "l", col = "red", lty = 2, lwd=2)
+
+predict_AR <- predict(AR, n.ahead=12)
+predict_AR$pred
+
+
+
+```
+For the AR model we also look at the date vs deaths. We can see that the AR(1) fit looks pretty good but compare it to the MA model.
+
+```{r MA vs AR}
+
+AIC(AR) # 13,103.2
+AIC(MA_diff)  # 12,398.28
+AIC(MA) # 18,712.88
+
+par(mfrow=c(2,2))
+plot(MA_diff$residuals)
+plot(AR$residuals)
+
+hist(MA_diff$residuals)
+qqnorm(MA_diff$residuals)
+qqline(MA_diff$residuals)
+```
+We can also see that the residuals have some trend but look fairly normal. By comparing the AICs we can see that the MA(1) with differencing = 1 has the lowest AIC. However, the AICs are fairly large leading us to believe that neither MA or AR models are fit for this data. 
+
+##Statistical results and conclusions from models and methods 
+
+#Research Question #1: Are confirmed cases linearly correlated with deaths?
+
+```{r RQ1}
+cor(covid$Confirmed, covid$Deaths)
+plot(covid$Confirmed, covid$Deaths, xlab="Confirmed Cases", ylab="Deaths", main="COVID Confirmed Cases vs Deaths", type='l')
+
+```
+Yes, confirmed cases and deaths appear to have a linear relationship and have a high correlation of 0.997. 
+
+#Research Question #2: How does the trend of covid cases change based on geographic location?
+
+
+
+
+#Research Question #3: How can we predict the number of covid cases with forecasting?
+```{r RQ3 model 1}
+confirmed.arima1 = arima(y, order=c(0, 2,1), seasonal=list(order=c(0, 1,1), period=7))
+
+plot(confirmed.arima1$residuals, ylab = 'residuals')
+acf(confirmed.arima1$residuals, lag.max  = 50, na.action=na.pass)
+pacf(confirmed.arima1$residuals, lag.max  = 50, na.action=na.pass)
+
+qqnorm(confirmed.arima1$residual)
+qqline(confirmed.arima1$residual)
+Box.test(confirmed.arima1$residuals, fitdf=1, lag = 20, type="Ljung")
+
+confirmed.arima1$aic
+```
+
+```{r RQ3 model 2}
+confirmed.arima2 = arima(y, order=c(0, 2,2), seasonal=list(order=c(0, 1,1), period=7))
+
+plot(confirmed.arima2$residuals, ylab = 'residuals')
+acf(confirmed.arima2$residuals, lag.max  = 50, na.action=na.pass)
+
+qqnorm(confirmed.arima2$residual)
+qqline(confirmed.arima2$residual)
+
+confirmed.arima2$aic
+Box.test(confirmed.arima2$residuals, lag = 20, fitdf=2, type="Ljung")
+
+```
+We found that model 1 would be the best which is the ARIMA(0,2,1)x(0,1,1)7. Next, we take a closer look at the overall forecasting using the model. 
+
+```{r RQ3 forecast}
+
+#Forecasting with model 1 confirmed cases
+forecast=predict(confirmed.arima1, n.ahead =50)
+
+#overall forecast
+plot(y, xlim = c(0,700), ylim = c(0, 262659973), type='l')
+lines(forecast$pred, col="green")
+
+#closer look
+sarima.for(world$Confirmed, 50, 1,2,0,1,1,0,7)
+
+```
+
+```{r RQ3 exploratory}
+#initial plot
+ts.plot(world$Recovered[0:500])
+x = world$Recovered[0:500]
+par(mfrow=c(1,2))
+acf(x)
+pacf(x)
+
+#1st difference plot, acf, pacf
+par(mfrow=c(1, 1))
+diff(x)
+ts.plot(diff(x))
+par(mfrow=c(1, 2))
+acf(diff(x))
+pacf(diff(x))
+
+#2st difference plot, acf, pacf
+par(mfrow=c(1, 1))
+ts.plot(diff(diff(x)))
+par(mfrow=c(1, 2))
+acf(diff(diff(x)))
+pacf(diff(diff(x)))
+
+```
+
+```{r RQ3 arima3 & arima4}
+par(mfrow=c(2, 2))
+confirmed.arima3 = arima(x, order=c(0, 2, 1))
+plot(confirmed.arima3$residuals, ylab = 'residuals')
+acf(confirmed.arima3$residuals, lag.max  = 50)
+pacf(confirmed.arima3$residuals, lag.max  = 50)
+
+qqnorm(confirmed.arima3$residual)
+qqline(confirmed.arima3$residual)
+
+Box.test(confirmed.arima3$residuals, lag = 20, fitdf=1, type="Ljung")
+
+confirmed.arima3$aic
+
+confirmed.arima4 = arima(x, order=c(0, 2, 2))
+plot(confirmed.arima4$residuals, ylab = 'residuals')
+acf(confirmed.arima4$residuals, lag.max  = 50)
+pacf(confirmed.arima4$residuals, lag.max  = 50)
+
+qqnorm(confirmed.arima4$residual)
+qqline(confirmed.arima4$residual)
+
+Box.test(confirmed.arima4$residuals, lag = 20, fitdf=1, type="Ljung")
+
+confirmed.arima4$aic
+
+```
+We can see that the ARIMA(0,2,1) model is the best, so we forecast with this model
+
+```{r RQ3 forecast2}
+##Forecasting with recovered cases
+forecast=predict(confirmed.arima3, n.ahead =50)
+
+plot(x, type = 'l', xlim = c(0,550), ylim=c(0,139575581))
+lines(forecast$pred, col ='green')
+
+#closer look
+sarima.for(x,30, 0,2,1, 0,0,0,0)
+
+```
+
+```{r RQ3 exploratory continued}
+#de-trend deaths
+ts.plot(world$Deaths)
+d = world$Deaths
+par(mfrow=c(1, 2))
+acf(d)
+pacf(d)
+
+#1st difference plot, acf, pacf
+par(mfrow=c(1, 1))
+ts.plot((diff(d)))
+par(mfrow=c(1, 2))
+acf(diff(d), lag.max=(50))
+pacf(diff(d),  lag.max=(50))
+
+#2nd difference plot, acf, pacf
+par(mfrow=c(1, 1))
+ts.plot((diff(diff(d))))
+par(mfrow=c(1, 2))
+acf(diff(diff(d)), lag.max=(50))
+pacf(diff(diff(d)),  lag.max=(50))
+
+#1st seasonal difference period 7 plot, acf, pacf
+acf(diff(diff(diff(d)), 7), lag.max=50)
+pacf(diff(diff(diff(d)), 7), lag.max=50)
+```
+
+
+```{r RQ3 arima5 & arima6}
+confirmed.arima5 = arima(d, order=c(0, 1, 1),  seasonal=list(order=c(0, 1,2), period=7))
+par(mfrow=c(1, 1))
+plot(confirmed.arima5$residuals, ylab = 'residuals')
+par(mfrow=c(1, 2))
+acf(confirmed.arima5$residuals, lag.max  = 50)
+pacf(confirmed.arima5$residuals, lag.max  = 50)
+
+qqnorm(confirmed.arima5$residual)
+qqline(confirmed.arima5$residual)
+
+Box.test(confirmed.arima5$residuals, lag = 20,fitdf=1)
+confirmed.arima5$aic
+
+confirmed.arima6 = arima(d, order=c(0, 1, 1),  seasonal=list(order=c(0, 1,1), period=7))
+par(mfrow=c(1, 1))
+plot(confirmed.arima6$residuals, ylab = 'residuals')
+par(mfrow=c(1, 2))
+acf(confirmed.arima6$residuals, lag.max  = 50)
+pacf(confirmed.arima6$residuals, lag.max  = 50)
+
+qqnorm(confirmed.arima6$residual)
+qqline(confirmed.arima6$residual)
+
+Box.test(confirmed.arima6$residuals, lag = 20,fitdf=1)
+confirmed.arima6$aic
+
+
+```
+We can see that the ARIMA(0,1,1)x(0,1,2)7 model is the best so we use it to forecast deaths
+
+```{r RQ3 forecast3}
+forecast=predict(confirmed.arima5, n.ahead =50)
+
+plot(d, type = 'l', ylim= c(0, 5236472), xlim= c(0,700))
+lines(forecast$pred, col ='green')
+
+#closer look
+sarima.for(d, 50, 0,1,1,0,1,2,7)
+```
+
+The overall conclusion regarding this question is the confirmed cases and deaths both can be forecasted using an ARIMA(0,2,1)x(0,1,1)7 model. However, recoveries doesn't seem to have a seasonal component so it can be modeled with ARIMA(0,2,1). The period of 7 for seasonality of confirmed cases and deaths can be explained by the trends we see weekly and the way the data is collected. Oftentimes there are patterns depending on the day of the week. 
+
+#Research Question #4: What times of the year do the most covid cases and/or deaths occur?
+
+
+
