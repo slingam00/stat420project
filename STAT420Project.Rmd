@@ -412,5 +412,28 @@ The overall conclusion regarding this question is the confirmed cases and deaths
 
 # Research Question #4: What times of the year do the most covid cases and/or deaths occur?
 
+#Worldwide Confirmed Cases
+worldwide_data <- read.csv("~/stat420/covid_data/worldwide-aggregate.csv")
+worldwide_data$Date=as.Date(with_tz(worldwide_data$Date, "America/New_York"))
+ggplot(worldwide_data, aes(x=Date, y=Confirmed))+
+  geom_line(color = 'orange')+
+  labs(x='time', y='# Deaths', title='Worldwide Confirmed Cases')+
+  scale_x_date(date_breaks = "2 months" , date_labels = "%b-%y")
+
+a = (diff(diff(worldwide_data$Confirmed)))
+plot.ts(a)
+acf(a)
+pacf(a)
+ww_arima = arima(worldwide_data$Confirmed, order= c(0,2,0))
+
+#Worldwide Increase Rate
+worldwide_data$Date=as.Date(with_tz(worldwide_data$Date, "America/New_York"))
+ggplot(worldwide_data, aes(x=Date, y=Increase.rate))+
+  geom_line(color = 'orange')+
+  labs(x='time', y='# Deaths', title='Worldwide Confirmed Cases')+
+  scale_x_date(date_breaks = "2 months" , date_labels = "%b-%y")
+
+
+Based on the plots, we can see there is a slight seasonal trend with Confirmed COVID cases on the worldwide scale approximately every 3 months. There is the initial spike of increase rate at the start of the pandemic and another notable drastic increase in December 2020. 
 
 
