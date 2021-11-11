@@ -226,6 +226,7 @@ japan$per = japan$Confirmed/100000
 
 ```
 
+As seen by the graphs, there seems to be a high count of COVID-19 cases in the United States and India. While these two countries are in different geographic locations, it seems as though the quarantining policy wasn't strict enough, wasn't enforced properly, or wasn't followed in these two countries. Further research will need to be done to see if there is a change in trend based on geographic location. However, it is more likely based on this analysis that a refinement to the research question could be made to measure the difference in COVID-19 case trends in countries based on the strictness of their quarantining policies.
 
 
 # Research Question #3: How can we predict the number of covid cases with forecasting?
