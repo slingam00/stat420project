@@ -2,22 +2,22 @@
 title: "STAT 420 Project"
 author: "Group 9"
 date: "11/10/2021"
-output: pdf_document
+output: html_document
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-##Introduction to the data set and research problems
+# Introduction to the data set and research problems
 
 The COVID-19 pandemic has dramatically affected the daily lives of everyone in the world. As such, our group wanted to investigate the toll the pandemic has taken on different places across the globe. The dataset we have selected consists of worldwide COVID-19 data, broken down for each country, and broken down for each state within the US. The attributes within this data set are confirmed cases, deaths, recoveries, the rate of increase, and their corresponding dates. Within this dataset, we plan to use both the countries-aggregated.csv and worldwide-aggregated.csv to combine all the attributes and discover the relationships and trends within this combined data set.
 
 Specifically, we want to research a few areas like, are confirmed COVID-19 cases correlated with deaths? And if so, is there a lag between high confirmed COVID-19 cases and high death cases? Additionally, we want to look at how the trend of COVID-19 cases change based on geographic location around the world. This delves into how strict countries were in quarantining and lockdown, so it would be interesting to see if there was an optimal quarantining method. Furthermore, we also want to look at if we can predict future COVID-19 cases using forecasting. Finally, we want to look at the times of the year where COVID-19 cases and deaths occur the most and if it is seasonal.
 
-##Exploratory Data Analysis
+# Exploratory Data Analysis
 
-```{r reading in data}
+```{r, results = 'hide', warning=FALSE, message=FALSE}
 library(readr)
 library(ggplot2)
 library(astsa)
@@ -166,7 +166,7 @@ qqline(MA_diff$residuals)
 ```
 We can also see that the residuals have some trend but look fairly normal. By comparing the AICs we can see that the MA(1) with differencing = 1 has the lowest AIC. However, the AICs are fairly large leading us to believe that neither MA or AR models are fit for this data. 
 
-##Statistical results and conclusions from models and methods 
+## Statistical results and conclusions from models and methods 
 
 # Research Question #1: Are confirmed cases linearly correlated with deaths?
 
@@ -231,6 +231,45 @@ As seen by the graphs, there seems to be a high count of COVID-19 cases in the U
 
 # Research Question #3: How can we predict the number of covid cases with forecasting?
 ```{r RQ3 model 1}
+countries<- read_csv("data/countries-aggregated.csv")
+world <- read_csv("data/worldwide-aggregate.csv")
+
+#explaratory analysis (de-trend confirmed cases)
+#initial plot
+plot(world$Date, world$Confirmed)
+y=world$Confirmed
+time=world$Date
+acf(y)
+pacf(y)
+
+#regression to de-trend
+y.lm=lm(y~time)
+plot(world$Date,y, type='l', xlab='time')
+abline(reg=y.lm)
+
+#check acf after regression
+acf(resid(y.lm))
+
+#detrend through difference
+plot(diff(resid(y.lm)), type='l')
+acf(diff(resid(y.lm)))
+
+#plot 1st difference, acf, pacf
+plot(diff(y), type='l')
+acf(diff(y))
+pacf(diff(y))
+
+#plot 2nd difference, acf, pacf
+plot(diff(diff(y)), type='l')
+acf(diff(diff(y)))
+pacf(diff(diff(y)))
+
+#plot 1st seasonal difference, acf, pacf
+plot(diff(diff(diff(y)), 7))
+acf(diff(diff(diff(y)), 7))
+fin = diff(diff(diff(y)), 7)
+pacf(fin)
+
 confirmed.arima1 = arima(y, order=c(0, 2,1), seasonal=list(order=c(0, 1,1), period=7))
 
 plot(confirmed.arima1$residuals, ylab = 'residuals')
@@ -414,7 +453,7 @@ The overall conclusion regarding this question is the confirmed cases and deaths
 
 ```{r}
 #Worldwide Confirmed Cases
-worldwide_data <- read.csv("~/stat420/covid_data/worldwide-aggregate.csv")
+worldwide_data <- read.csv("data/worldwide-aggregate.csv")
 worldwide_data$Date=as.Date(with_tz(worldwide_data$Date, "America/New_York"))
 ggplot(worldwide_data, aes(x=Date, y=Confirmed))+
   geom_line(color = 'orange')+

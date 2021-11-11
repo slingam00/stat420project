@@ -1,0 +1,1653 @@
+\documentclass[]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\usepackage{fixltx2e} % provides \textsubscript
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+\else % if luatex or xelatex
+  \ifxetex
+    \usepackage{mathspec}
+  \else
+    \usepackage{fontspec}
+  \fi
+  \defaultfontfeatures{Ligatures=TeX,Scale=MatchLowercase}
+\fi
+% use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+% use microtype if available
+\IfFileExists{microtype.sty}{%
+\usepackage{microtype}
+\UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\usepackage[margin=1in]{geometry}
+\usepackage{hyperref}
+\hypersetup{unicode=true,
+            pdftitle={STAT 420 Project},
+            pdfauthor={Group 9},
+            pdfborder={0 0 0},
+            breaklinks=true}
+\urlstyle{same}  % don't use monospace font for urls
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{graphicx,grffile}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+\IfFileExists{parskip.sty}{%
+\usepackage{parskip}
+}{% else
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt plus 2pt minus 1pt}
+}
+\setlength{\emergencystretch}{3em}  % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{0}
+% Redefines (sub)paragraphs to behave more like sections
+\ifx\paragraph\undefined\else
+\let\oldparagraph\paragraph
+\renewcommand{\paragraph}[1]{\oldparagraph{#1}\mbox{}}
+\fi
+\ifx\subparagraph\undefined\else
+\let\oldsubparagraph\subparagraph
+\renewcommand{\subparagraph}[1]{\oldsubparagraph{#1}\mbox{}}
+\fi
+
+%%% Use protect on footnotes to avoid problems with footnotes in titles
+\let\rmarkdownfootnote\footnote%
+\def\footnote{\protect\rmarkdownfootnote}
+
+%%% Change title format to be more compact
+\usepackage{titling}
+
+% Create subtitle command for use in maketitle
+\providecommand{\subtitle}[1]{
+  \posttitle{
+    \begin{center}\large#1\end{center}
+    }
+}
+
+\setlength{\droptitle}{-2em}
+
+  \title{STAT 420 Project}
+    \pretitle{\vspace{\droptitle}\centering\huge}
+  \posttitle{\par}
+    \author{Group 9}
+    \preauthor{\centering\large\emph}
+  \postauthor{\par}
+      \predate{\centering\large\emph}
+  \postdate{\par}
+    \date{11/10/2021}
+
+
+\begin{document}
+\maketitle
+
+\hypertarget{introduction-to-the-data-set-and-research-problems}{%
+\section{Introduction to the data set and research
+problems}\label{introduction-to-the-data-set-and-research-problems}}
+
+The COVID-19 pandemic has dramatically affected the daily lives of
+everyone in the world. As such, our group wanted to investigate the toll
+the pandemic has taken on different places across the globe. The dataset
+we have selected consists of worldwide COVID-19 data, broken down for
+each country, and broken down for each state within the US. The
+attributes within this data set are confirmed cases, deaths, recoveries,
+the rate of increase, and their corresponding dates. Within this
+dataset, we plan to use both the countries-aggregated.csv and
+worldwide-aggregated.csv to combine all the attributes and discover the
+relationships and trends within this combined data set.
+
+Specifically, we want to research a few areas like, are confirmed
+COVID-19 cases correlated with deaths? And if so, is there a lag between
+high confirmed COVID-19 cases and high death cases? Additionally, we
+want to look at how the trend of COVID-19 cases change based on
+geographic location around the world. This delves into how strict
+countries were in quarantining and lockdown, so it would be interesting
+to see if there was an optimal quarantining method. Furthermore, we also
+want to look at if we can predict future COVID-19 cases using
+forecasting. Finally, we want to look at the times of the year where
+COVID-19 cases and deaths occur the most and if it is seasonal.
+
+\hypertarget{exploratory-data-analysis}{%
+\section{Exploratory Data Analysis}\label{exploratory-data-analysis}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{library}\NormalTok{(readr)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: package 'readr' was built under R version 3.6.3
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{library}\NormalTok{(ggplot2)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: package 'ggplot2' was built under R version 3.6.3
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{library}\NormalTok{(astsa)}
+\KeywordTok{library}\NormalTok{(lubridate)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: package 'lubridate' was built under R version 3.6.3
+\end{verbatim}
+
+\begin{verbatim}
+## 
+## Attaching package: 'lubridate'
+\end{verbatim}
+
+\begin{verbatim}
+## The following objects are masked from 'package:base':
+## 
+##     date, intersect, setdiff, union
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{library}\NormalTok{(tidyverse)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: package 'tidyverse' was built under R version 3.6.3
+\end{verbatim}
+
+\begin{verbatim}
+## -- Attaching packages ---------------------------------- tidyverse 1.3.1 --
+\end{verbatim}
+
+\begin{verbatim}
+## v tibble  3.1.1     v dplyr   1.0.6
+## v tidyr   1.1.3     v stringr 1.4.0
+## v purrr   0.3.4     v forcats 0.5.1
+\end{verbatim}
+
+\begin{verbatim}
+## Warning: package 'tibble' was built under R version 3.6.3
+\end{verbatim}
+
+\begin{verbatim}
+## Warning: package 'tidyr' was built under R version 3.6.3
+\end{verbatim}
+
+\begin{verbatim}
+## Warning: package 'purrr' was built under R version 3.6.3
+\end{verbatim}
+
+\begin{verbatim}
+## Warning: package 'dplyr' was built under R version 3.6.3
+\end{verbatim}
+
+\begin{verbatim}
+## Warning: package 'forcats' was built under R version 3.6.3
+\end{verbatim}
+
+\begin{verbatim}
+## -- Conflicts ------------------------------------- tidyverse_conflicts() --
+## x lubridate::as.difftime() masks base::as.difftime()
+## x lubridate::date()        masks base::date()
+## x dplyr::filter()          masks stats::filter()
+## x lubridate::intersect()   masks base::intersect()
+## x dplyr::lag()             masks stats::lag()
+## x lubridate::setdiff()     masks base::setdiff()
+## x lubridate::union()       masks base::union()
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{covid =}\StringTok{ }\KeywordTok{read_csv}\NormalTok{(}\StringTok{"data/worldwide-aggregate.csv"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## -- Column specification ---------------------------------------------------
+## cols(
+##   Date = col_date(format = ""),
+##   Confirmed = col_double(),
+##   Recovered = col_double(),
+##   Deaths = col_double(),
+##   `Increase rate` = col_double()
+## )
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{countries<-}\StringTok{ }\KeywordTok{read_csv}\NormalTok{(}\StringTok{"data/countries-aggregated.csv"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## -- Column specification ---------------------------------------------------
+## cols(
+##   Date = col_date(format = ""),
+##   Country = col_character(),
+##   Confirmed = col_double(),
+##   Recovered = col_double(),
+##   Deaths = col_double()
+## )
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{world <-}\StringTok{ }\KeywordTok{read_csv}\NormalTok{(}\StringTok{"data/worldwide-aggregate.csv"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## -- Column specification ---------------------------------------------------
+## cols(
+##   Date = col_date(format = ""),
+##   Confirmed = col_double(),
+##   Recovered = col_double(),
+##   Deaths = col_double(),
+##   `Increase rate` = col_double()
+## )
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{ggplot}\NormalTok{(covid, }\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x=}\NormalTok{Date, }\DataTypeTok{y=}\NormalTok{Deaths)) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{geom_line}\NormalTok{() }\OperatorTok{+}\StringTok{ }\KeywordTok{xlab}\NormalTok{(}\StringTok{"Date"}\NormalTok{) }\OperatorTok{+}\StringTok{ }\KeywordTok{ylab}\NormalTok{(}\StringTok{"Deaths"}\NormalTok{) }\OperatorTok{+}\StringTok{ }
+\StringTok{  }\KeywordTok{ggtitle}\NormalTok{(}\StringTok{"COVID Deaths Over Time"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{STAT420Project_files/figure-latex/exploratory-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{ggplot}\NormalTok{(covid, }\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x=}\NormalTok{Date, }\DataTypeTok{y=}\NormalTok{Confirmed)) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{geom_line}\NormalTok{() }\OperatorTok{+}\StringTok{ }\KeywordTok{xlab}\NormalTok{(}\StringTok{"Date"}\NormalTok{) }\OperatorTok{+}\StringTok{ }\KeywordTok{ylab}\NormalTok{(}\StringTok{"Confirmed Cases"}\NormalTok{) }\OperatorTok{+}\StringTok{ }
+\StringTok{  }\KeywordTok{ggtitle}\NormalTok{(}\StringTok{"COVID Confirmed Cases Over Time"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{STAT420Project_files/figure-latex/exploratory-2.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#We can see that over time the deaths are increasing as well as the confirmed COVID cases. }
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{y=world}\OperatorTok{$}\NormalTok{Confirmed}
+\NormalTok{x=world}\OperatorTok{$}\NormalTok{Deaths}
+\NormalTok{time=world}\OperatorTok{$}\NormalTok{Date}
+
+\NormalTok{y.lm=}\KeywordTok{lm}\NormalTok{(y}\OperatorTok{~}\NormalTok{time)}
+\KeywordTok{plot}\NormalTok{(world}\OperatorTok{$}\NormalTok{Date,y, }\DataTypeTok{type=}\StringTok{'l'}\NormalTok{, }\DataTypeTok{xlab=}\StringTok{'time'}\NormalTok{, }\DataTypeTok{ylab=}\StringTok{'Confirmed'}\NormalTok{)}
+\KeywordTok{abline}\NormalTok{(}\DataTypeTok{reg=}\NormalTok{y.lm)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{STAT420Project_files/figure-latex/detrending through regression and differencing-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{x.lm=}\KeywordTok{lm}\NormalTok{(x}\OperatorTok{~}\NormalTok{time)}
+\KeywordTok{plot}\NormalTok{(world}\OperatorTok{$}\NormalTok{Date,x, }\DataTypeTok{type=}\StringTok{'l'}\NormalTok{, }\DataTypeTok{xlab=}\StringTok{'time'}\NormalTok{, }\DataTypeTok{ylab=}\StringTok{'Deaths'}\NormalTok{)}
+\KeywordTok{abline}\NormalTok{(}\DataTypeTok{reg=}\NormalTok{x.lm)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{STAT420Project_files/figure-latex/detrending through regression and differencing-2.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{par}\NormalTok{(}\DataTypeTok{mfrow=}\KeywordTok{c}\NormalTok{(}\DecValTok{2}\NormalTok{,}\DecValTok{2}\NormalTok{))}
+\NormalTok{res=}\KeywordTok{resid}\NormalTok{(x.lm)}
+\KeywordTok{plot}\NormalTok{(res, }\DataTypeTok{type=}\StringTok{'l'}\NormalTok{, }\DataTypeTok{ylab =} \StringTok{'residual'}\NormalTok{, }\DataTypeTok{main=}\StringTok{'Residual plot'}\NormalTok{)}
+\KeywordTok{plot}\NormalTok{(}\KeywordTok{diff}\NormalTok{(res), }\DataTypeTok{type=}\StringTok{'l'}\NormalTok{, }\DataTypeTok{ylab=}\StringTok{"difference"}\NormalTok{, }\DataTypeTok{main =} \StringTok{'First order differencing'}\NormalTok{)}
+\KeywordTok{acf}\NormalTok{(res, }\DataTypeTok{main=}\StringTok{'Residual'}\NormalTok{)}
+\KeywordTok{acf}\NormalTok{(}\KeywordTok{diff}\NormalTok{(res), }\DataTypeTok{main=}\StringTok{"Differenced residual"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{STAT420Project_files/figure-latex/detrending through regression and differencing-3.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{par}\NormalTok{(}\DataTypeTok{mfrow=}\KeywordTok{c}\NormalTok{(}\DecValTok{2}\NormalTok{,}\DecValTok{2}\NormalTok{))}
+\NormalTok{res=}\KeywordTok{resid}\NormalTok{(y.lm)}
+\KeywordTok{plot}\NormalTok{(res, }\DataTypeTok{type=}\StringTok{'l'}\NormalTok{, }\DataTypeTok{ylab =} \StringTok{'residual'}\NormalTok{, }\DataTypeTok{main=}\StringTok{'Residual plot'}\NormalTok{)}
+\KeywordTok{plot}\NormalTok{(}\KeywordTok{diff}\NormalTok{(res), }\DataTypeTok{type=}\StringTok{'l'}\NormalTok{, }\DataTypeTok{ylab=}\StringTok{"difference"}\NormalTok{, }\DataTypeTok{main =} \StringTok{'First order differencing'}\NormalTok{)}
+\KeywordTok{acf}\NormalTok{(res, }\DataTypeTok{main=}\StringTok{'Residual'}\NormalTok{)}
+\KeywordTok{acf}\NormalTok{(}\KeywordTok{diff}\NormalTok{(res), }\DataTypeTok{main=}\StringTok{"Differenced residual"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{STAT420Project_files/figure-latex/detrending through regression and differencing-4.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#1st difference, acf, pacf}
+\KeywordTok{par}\NormalTok{(}\DataTypeTok{mfrow=}\KeywordTok{c}\NormalTok{(}\DecValTok{2}\NormalTok{,}\DecValTok{2}\NormalTok{))}
+\KeywordTok{acf}\NormalTok{(}\KeywordTok{diff}\NormalTok{(y), }\DataTypeTok{main=}\StringTok{'ACF Confirmed'}\NormalTok{)}
+\KeywordTok{pacf}\NormalTok{(}\KeywordTok{diff}\NormalTok{(y), }\DataTypeTok{main=}\StringTok{'PACF Confirmed'}\NormalTok{)}
+\KeywordTok{acf}\NormalTok{(}\KeywordTok{diff}\NormalTok{(x), }\DataTypeTok{main=}\StringTok{'ACF Deaths'}\NormalTok{)}
+\KeywordTok{pacf}\NormalTok{(}\KeywordTok{diff}\NormalTok{(x), }\DataTypeTok{main=}\StringTok{'PACF Deaths'}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{STAT420Project_files/figure-latex/first, second, and seasonal differencing-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{par}\NormalTok{(}\DataTypeTok{mfrow=}\KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{3}\NormalTok{))}
+\CommentTok{#plot 2nd difference, acf, pacf}
+\KeywordTok{plot}\NormalTok{(}\KeywordTok{diff}\NormalTok{(}\KeywordTok{diff}\NormalTok{(y)), }\DataTypeTok{type=}\StringTok{'l'}\NormalTok{)}
+\KeywordTok{acf}\NormalTok{(}\KeywordTok{diff}\NormalTok{(}\KeywordTok{diff}\NormalTok{(y)))}
+\KeywordTok{pacf}\NormalTok{(}\KeywordTok{diff}\NormalTok{(}\KeywordTok{diff}\NormalTok{(y)))}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{STAT420Project_files/figure-latex/first, second, and seasonal differencing-2.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#plot 1st seasonal difference, acf, pacf}
+\KeywordTok{plot}\NormalTok{(}\KeywordTok{diff}\NormalTok{(}\KeywordTok{diff}\NormalTok{(}\KeywordTok{diff}\NormalTok{(y)), }\DecValTok{7}\NormalTok{))}
+\KeywordTok{acf}\NormalTok{(}\KeywordTok{diff}\NormalTok{(}\KeywordTok{diff}\NormalTok{(}\KeywordTok{diff}\NormalTok{(y)), }\DecValTok{7}\NormalTok{))}
+\NormalTok{fin =}\StringTok{ }\KeywordTok{diff}\NormalTok{(}\KeywordTok{diff}\NormalTok{(}\KeywordTok{diff}\NormalTok{(y)), }\DecValTok{7}\NormalTok{)}
+\KeywordTok{pacf}\NormalTok{(fin)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{STAT420Project_files/figure-latex/first, second, and seasonal differencing-3.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Moving averages - day 50, 100, and 200:}
+\NormalTok{covid}\OperatorTok{$}\NormalTok{Date <-}\StringTok{ }\KeywordTok{as.Date}\NormalTok{(covid}\OperatorTok{$}\NormalTok{Date, }\StringTok{"%Y-%m-%d"}\NormalTok{)}
+\KeywordTok{plot}\NormalTok{(covid}\OperatorTok{$}\NormalTok{Date, covid}\OperatorTok{$}\NormalTok{Deaths, }\DataTypeTok{xaxt=}\StringTok{"n"}\NormalTok{, }\DataTypeTok{type=}\StringTok{"l"}\NormalTok{, }\DataTypeTok{col=}\StringTok{"gray"}\NormalTok{, }\DataTypeTok{lwd=}\DecValTok{2}\NormalTok{)}
+\KeywordTok{axis}\NormalTok{(}\DecValTok{1}\NormalTok{, covid}\OperatorTok{$}\NormalTok{Date, }\KeywordTok{format}\NormalTok{(covid}\OperatorTok{$}\NormalTok{Date, }\StringTok{"%m-%Y"}\NormalTok{))}
+\KeywordTok{lines}\NormalTok{(covid}\OperatorTok{$}\NormalTok{Date, zoo}\OperatorTok{::}\KeywordTok{rollmean}\NormalTok{(covid}\OperatorTok{$}\NormalTok{Deaths, }\DecValTok{50}\NormalTok{, }\DataTypeTok{align=}\StringTok{'right'}\NormalTok{, }\DataTypeTok{fill=}\OtherTok{NA}\NormalTok{), }\DataTypeTok{col=}\StringTok{'red'}\NormalTok{, }\DataTypeTok{lwd=}\DecValTok{2}\NormalTok{)}
+\KeywordTok{lines}\NormalTok{(covid}\OperatorTok{$}\NormalTok{Date, zoo}\OperatorTok{::}\KeywordTok{rollmean}\NormalTok{(covid}\OperatorTok{$}\NormalTok{Deaths, }\DecValTok{100}\NormalTok{, }\DataTypeTok{align=}\StringTok{'right'}\NormalTok{, }\DataTypeTok{fill=}\OtherTok{NA}\NormalTok{), }\DataTypeTok{col=}\StringTok{'blue'}\NormalTok{, }\DataTypeTok{lwd=}\DecValTok{2}\NormalTok{)}
+\KeywordTok{lines}\NormalTok{(covid}\OperatorTok{$}\NormalTok{Date, zoo}\OperatorTok{::}\KeywordTok{rollmean}\NormalTok{(covid}\OperatorTok{$}\NormalTok{Deaths, }\DecValTok{200}\NormalTok{, }\DataTypeTok{align=}\StringTok{'right'}\NormalTok{, }\DataTypeTok{fill=}\OtherTok{NA}\NormalTok{), }\DataTypeTok{col=}\StringTok{'green'}\NormalTok{, }\DataTypeTok{lwd=}\DecValTok{2}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{STAT420Project_files/figure-latex/moving averages-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{library}\NormalTok{(xts)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: package 'xts' was built under R version 3.6.3
+\end{verbatim}
+
+\begin{verbatim}
+## Loading required package: zoo
+\end{verbatim}
+
+\begin{verbatim}
+## Warning: package 'zoo' was built under R version 3.6.3
+\end{verbatim}
+
+\begin{verbatim}
+## 
+## Attaching package: 'zoo'
+\end{verbatim}
+
+\begin{verbatim}
+## The following objects are masked from 'package:base':
+## 
+##     as.Date, as.Date.numeric
+\end{verbatim}
+
+\begin{verbatim}
+## 
+## Attaching package: 'xts'
+\end{verbatim}
+
+\begin{verbatim}
+## The following objects are masked from 'package:dplyr':
+## 
+##     first, last
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{covid_ts =}\StringTok{ }\KeywordTok{xts}\NormalTok{(covid}\OperatorTok{$}\NormalTok{Deaths, }\KeywordTok{as.Date}\NormalTok{(covid}\OperatorTok{$}\NormalTok{Date, }\DataTypeTok{format=}\StringTok{'%Y-%m-%d'}\NormalTok{))}
+
+\KeywordTok{par}\NormalTok{(}\DataTypeTok{mfrow=}\KeywordTok{c}\NormalTok{(}\DecValTok{2}\NormalTok{,}\DecValTok{2}\NormalTok{))}
+\KeywordTok{plot}\NormalTok{(covid_ts)}
+\KeywordTok{plot}\NormalTok{(}\KeywordTok{log}\NormalTok{(covid_ts))}
+\KeywordTok{plot}\NormalTok{(}\KeywordTok{diff}\NormalTok{(}\KeywordTok{log}\NormalTok{(covid_ts)))}
+\KeywordTok{plot}\NormalTok{(}\KeywordTok{diff}\NormalTok{(}\KeywordTok{diff}\NormalTok{(}\KeywordTok{log}\NormalTok{(covid_ts))))}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{STAT420Project_files/figure-latex/exploratory model analysis-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{y =}\StringTok{ }\KeywordTok{diff}\NormalTok{(}\KeywordTok{diff}\NormalTok{(}\KeywordTok{log}\NormalTok{(covid_ts)))}
+
+\KeywordTok{par}\NormalTok{(}\DataTypeTok{mfrow=}\KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DecValTok{2}\NormalTok{))}
+\KeywordTok{acf}\NormalTok{(y, }\DataTypeTok{lag.max=}\DecValTok{10}\NormalTok{, }\DataTypeTok{na.action=}\NormalTok{na.pass)}
+\KeywordTok{pacf}\NormalTok{(y, }\DataTypeTok{lag.max=}\DecValTok{10}\NormalTok{, }\DataTypeTok{na.action=}\NormalTok{na.pass)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{STAT420Project_files/figure-latex/exploratory model analysis-2.pdf}
+From this we can see that the data is not normally distributed and it
+becomes stationary after being differenced twice. We can also see that
+there is no clear cut off for the ACF nor PACF.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{MA =}\StringTok{ }\KeywordTok{arima}\NormalTok{(covid_ts, }\DataTypeTok{order =} \KeywordTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{0}\NormalTok{, }\DecValTok{1}\NormalTok{))}
+\NormalTok{MA_fit =}\StringTok{ }\NormalTok{covid_ts }\OperatorTok{-}\StringTok{ }\KeywordTok{residuals}\NormalTok{(MA)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: Incompatible methods ("Ops.xts", "Ops.ts") for "-"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{plot.ts}\NormalTok{(covid_ts, }\DataTypeTok{ylab=}\StringTok{"Deaths"}\NormalTok{, }\DataTypeTok{main=}\StringTok{"COVID Deaths Over Time"}\NormalTok{, }\DataTypeTok{lwd=}\DecValTok{2}\NormalTok{)}
+\KeywordTok{points}\NormalTok{(MA_fit, }\DataTypeTok{type =} \StringTok{"l"}\NormalTok{, }\DataTypeTok{col =} \StringTok{"red"}\NormalTok{, }\DataTypeTok{lty =} \DecValTok{2}\NormalTok{, }\DataTypeTok{lwd=}\DecValTok{2}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{STAT420Project_files/figure-latex/MA model-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{MA_diff =}\StringTok{ }\KeywordTok{arima}\NormalTok{(covid_ts, }\DataTypeTok{order =} \KeywordTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{1}\NormalTok{, }\DecValTok{1}\NormalTok{))}
+\NormalTok{MA_diff_fit =}\StringTok{ }\NormalTok{covid_ts }\OperatorTok{-}\StringTok{ }\KeywordTok{residuals}\NormalTok{(MA_diff)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: Incompatible methods ("Ops.xts", "Ops.ts") for "-"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{plot.ts}\NormalTok{(covid_ts, }\DataTypeTok{ylab=}\StringTok{"Deaths"}\NormalTok{, }\DataTypeTok{main=}\StringTok{"COVID Deaths Over Time"}\NormalTok{, }\DataTypeTok{lwd=}\DecValTok{2}\NormalTok{)}
+\KeywordTok{points}\NormalTok{(MA_diff_fit, }\DataTypeTok{type =} \StringTok{"l"}\NormalTok{, }\DataTypeTok{col =} \StringTok{"green"}\NormalTok{, }\DataTypeTok{lty =} \DecValTok{2}\NormalTok{, }\DataTypeTok{lwd=}\DecValTok{2}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{STAT420Project_files/figure-latex/MA model-2.pdf} For
+the MA model we look at the date vs deaths. We can see that the MA(1)
+fit is not very good and that it looks much better after differencing.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{plot.ts}\NormalTok{(covid_ts, }\DataTypeTok{ylab=}\StringTok{"Deaths"}\NormalTok{, }\DataTypeTok{main=}\StringTok{"COVID Deaths Over Time"}\NormalTok{, }\DataTypeTok{lwd=}\DecValTok{2}\NormalTok{)}
+\NormalTok{AR <-}\StringTok{ }\KeywordTok{arima}\NormalTok{(covid_ts, }\DataTypeTok{order =} \KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{0}\NormalTok{,}\DecValTok{0}\NormalTok{))}
+\NormalTok{AR_fit <-}\StringTok{ }\NormalTok{covid_ts }\OperatorTok{-}\StringTok{ }\KeywordTok{residuals}\NormalTok{(AR)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: Incompatible methods ("Ops.xts", "Ops.ts") for "-"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{points}\NormalTok{(AR_fit, }\DataTypeTok{type =} \StringTok{"l"}\NormalTok{, }\DataTypeTok{col =} \StringTok{"red"}\NormalTok{, }\DataTypeTok{lty =} \DecValTok{2}\NormalTok{, }\DataTypeTok{lwd=}\DecValTok{2}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{STAT420Project_files/figure-latex/AR model-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{predict_AR <-}\StringTok{ }\KeywordTok{predict}\NormalTok{(AR, }\DataTypeTok{n.ahead=}\DecValTok{12}\NormalTok{)}
+\NormalTok{predict_AR}\OperatorTok{$}\NormalTok{pred}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Time Series:
+## Start = 654 
+## End = 665 
+## Frequency = 1 
+##  [1] 5029323 5029321 5029318 5029316 5029314 5029312 5029310 5029308
+##  [9] 5029305 5029303 5029301 5029299
+\end{verbatim}
+
+For the AR model we also look at the date vs deaths. We can see that the
+AR(1) fit looks pretty good but compare it to the MA model.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{AIC}\NormalTok{(AR) }\CommentTok{# 13,103.2}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 13701.63
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{AIC}\NormalTok{(MA_diff)  }\CommentTok{# 12,398.28}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 12960.51
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{AIC}\NormalTok{(MA) }\CommentTok{# 18,712.88}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 19652.59
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{par}\NormalTok{(}\DataTypeTok{mfrow=}\KeywordTok{c}\NormalTok{(}\DecValTok{2}\NormalTok{,}\DecValTok{2}\NormalTok{))}
+\KeywordTok{plot}\NormalTok{(MA_diff}\OperatorTok{$}\NormalTok{residuals)}
+\KeywordTok{plot}\NormalTok{(AR}\OperatorTok{$}\NormalTok{residuals)}
+
+\KeywordTok{hist}\NormalTok{(MA_diff}\OperatorTok{$}\NormalTok{residuals)}
+\KeywordTok{qqnorm}\NormalTok{(MA_diff}\OperatorTok{$}\NormalTok{residuals)}
+\KeywordTok{qqline}\NormalTok{(MA_diff}\OperatorTok{$}\NormalTok{residuals)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{STAT420Project_files/figure-latex/MA vs AR-1.pdf} We
+can also see that the residuals have some trend but look fairly normal.
+By comparing the AICs we can see that the MA(1) with differencing = 1
+has the lowest AIC. However, the AICs are fairly large leading us to
+believe that neither MA or AR models are fit for this data.
+
+\hypertarget{statistical-results-and-conclusions-from-models-and-methods}{%
+\subsection{Statistical results and conclusions from models and
+methods}\label{statistical-results-and-conclusions-from-models-and-methods}}
+
+\hypertarget{research-question-1-are-confirmed-cases-linearly-correlated-with-deaths}{%
+\section{Research Question \#1: Are confirmed cases linearly correlated
+with
+deaths?}\label{research-question-1-are-confirmed-cases-linearly-correlated-with-deaths}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{cor}\NormalTok{(covid}\OperatorTok{$}\NormalTok{Confirmed, covid}\OperatorTok{$}\NormalTok{Deaths)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0.9975087
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{plot}\NormalTok{(covid}\OperatorTok{$}\NormalTok{Confirmed, covid}\OperatorTok{$}\NormalTok{Deaths, }\DataTypeTok{xlab=}\StringTok{"Confirmed Cases"}\NormalTok{, }\DataTypeTok{ylab=}\StringTok{"Deaths"}\NormalTok{, }\DataTypeTok{main=}\StringTok{"COVID Confirmed Cases vs Deaths"}\NormalTok{, }\DataTypeTok{type=}\StringTok{'l'}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{STAT420Project_files/figure-latex/RQ1-1.pdf} Yes,
+confirmed cases and deaths appear to have a linear relationship and have
+a high correlation of 0.997.
+
+\hypertarget{research-question-2-how-does-the-trend-of-covid-cases-change-based-on-geographic-location}{%
+\section{Research Question \#2: How does the trend of covid cases change
+based on geographic
+location?}\label{research-question-2-how-does-the-trend-of-covid-cases-change-based-on-geographic-location}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{### North American Countries}
+\NormalTok{us_country <-}\StringTok{ }\NormalTok{countries[countries}\OperatorTok{$}\NormalTok{Country }\OperatorTok{==}\StringTok{ "US"}\NormalTok{,]}
+\NormalTok{canada <-}\StringTok{ }\NormalTok{countries[countries}\OperatorTok{$}\NormalTok{Country }\OperatorTok{==}\StringTok{ "Canada"}\NormalTok{,]}
+\NormalTok{mexico <-}\StringTok{ }\NormalTok{countries[countries}\OperatorTok{$}\NormalTok{Country }\OperatorTok{==}\StringTok{ "Mexico"}\NormalTok{,]}
+
+\NormalTok{us_country}\OperatorTok{$}\NormalTok{Date=}\KeywordTok{with_tz}\NormalTok{(us_country}\OperatorTok{$}\NormalTok{Date, }\StringTok{"America/New_York"}\NormalTok{)}
+\NormalTok{canada}\OperatorTok{$}\NormalTok{Date=}\KeywordTok{with_tz}\NormalTok{(canada}\OperatorTok{$}\NormalTok{Date, }\StringTok{"America/New_York"}\NormalTok{)}
+\NormalTok{mexico}\OperatorTok{$}\NormalTok{Date=}\KeywordTok{with_tz}\NormalTok{(mexico}\OperatorTok{$}\NormalTok{Date, }\StringTok{"America/New_York"}\NormalTok{)}
+
+\NormalTok{us_country}\OperatorTok{$}\NormalTok{per =}\StringTok{ }\NormalTok{us_country}\OperatorTok{$}\NormalTok{Confirmed}\OperatorTok{/}\DecValTok{100000}
+\NormalTok{canada}\OperatorTok{$}\NormalTok{per =}\StringTok{ }\NormalTok{canada}\OperatorTok{$}\NormalTok{Confirmed}\OperatorTok{/}\DecValTok{100000}
+\NormalTok{mexico}\OperatorTok{$}\NormalTok{per =}\StringTok{ }\NormalTok{mexico}\OperatorTok{$}\NormalTok{Confirmed}\OperatorTok{/}\DecValTok{100000}
+
+\NormalTok{(}\KeywordTok{ggplot}\NormalTok{(us_country, }\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ Date, }\DataTypeTok{y =} \StringTok{`}\DataTypeTok{per}\StringTok{`}\NormalTok{)) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{geom_line}\NormalTok{(}\KeywordTok{aes}\NormalTok{(}\DataTypeTok{y =} \StringTok{`}\DataTypeTok{per}\StringTok{`}\NormalTok{, }\DataTypeTok{color =} \StringTok{"USA"}\NormalTok{))  }\OperatorTok{+}
+\StringTok{  }\KeywordTok{geom_line}\NormalTok{(}\DataTypeTok{data =}\NormalTok{ canada, }\KeywordTok{aes}\NormalTok{(}\DataTypeTok{color =} \StringTok{"Canada"}\NormalTok{)) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{geom_line}\NormalTok{(}\DataTypeTok{data =}\NormalTok{ mexico, }\KeywordTok{aes}\NormalTok{(}\DataTypeTok{color =} \StringTok{"Mexico"}\NormalTok{)) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{xlab}\NormalTok{(}\StringTok{'Date'}\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{ylab}\NormalTok{(}\StringTok{'Count'}\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{ggtitle}\NormalTok{(}\StringTok{'North American Country Covid Cases per 100,000'}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{STAT420Project_files/figure-latex/RQ2-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{### Asian Countries}
+\NormalTok{india <-}\StringTok{ }\NormalTok{countries[countries}\OperatorTok{$}\NormalTok{Country }\OperatorTok{==}\StringTok{ "India"}\NormalTok{,]}
+\NormalTok{china <-}\StringTok{ }\NormalTok{countries[countries}\OperatorTok{$}\NormalTok{Country }\OperatorTok{==}\StringTok{ "China"}\NormalTok{,]}
+\NormalTok{japan <-}\StringTok{ }\NormalTok{countries[countries}\OperatorTok{$}\NormalTok{Country }\OperatorTok{==}\StringTok{ "Japan"}\NormalTok{,]}
+
+\NormalTok{india}\OperatorTok{$}\NormalTok{Date=}\KeywordTok{with_tz}\NormalTok{(india}\OperatorTok{$}\NormalTok{Date, }\StringTok{"America/New_York"}\NormalTok{)}
+\NormalTok{china}\OperatorTok{$}\NormalTok{Date=}\KeywordTok{with_tz}\NormalTok{(china}\OperatorTok{$}\NormalTok{Date, }\StringTok{"America/New_York"}\NormalTok{)}
+\NormalTok{japan}\OperatorTok{$}\NormalTok{Date=}\KeywordTok{with_tz}\NormalTok{(japan}\OperatorTok{$}\NormalTok{Date, }\StringTok{"America/New_York"}\NormalTok{)}
+
+\NormalTok{india}\OperatorTok{$}\NormalTok{per =}\StringTok{ }\NormalTok{india}\OperatorTok{$}\NormalTok{Confirmed}\OperatorTok{/}\DecValTok{100000}
+\NormalTok{china}\OperatorTok{$}\NormalTok{per =}\StringTok{ }\NormalTok{china}\OperatorTok{$}\NormalTok{Confirmed}\OperatorTok{/}\DecValTok{100000}
+\NormalTok{japan}\OperatorTok{$}\NormalTok{per =}\StringTok{ }\NormalTok{japan}\OperatorTok{$}\NormalTok{Confirmed}\OperatorTok{/}\DecValTok{100000}
+
+
+\NormalTok{(}\KeywordTok{ggplot}\NormalTok{(india, }\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ Date, }\DataTypeTok{y =} \StringTok{`}\DataTypeTok{per}\StringTok{`}\NormalTok{)) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{geom_line}\NormalTok{(}\KeywordTok{aes}\NormalTok{(}\DataTypeTok{y =} \StringTok{`}\DataTypeTok{per}\StringTok{`}\NormalTok{, }\DataTypeTok{color =} \StringTok{"India"}\NormalTok{))  }\OperatorTok{+}
+\StringTok{  }\KeywordTok{geom_line}\NormalTok{(}\DataTypeTok{data =}\NormalTok{ china, }\KeywordTok{aes}\NormalTok{(}\DataTypeTok{color =} \StringTok{"China"}\NormalTok{)) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{geom_line}\NormalTok{(}\DataTypeTok{data =}\NormalTok{ japan, }\KeywordTok{aes}\NormalTok{(}\DataTypeTok{color =} \StringTok{"Japan"}\NormalTok{)) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{xlab}\NormalTok{(}\StringTok{'Date'}\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{ylab}\NormalTok{(}\StringTok{'Count'}\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{ggtitle}\NormalTok{(}\StringTok{'Asian Country Covid Cases per 100,000'}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{STAT420Project_files/figure-latex/RQ2-2.pdf}
+
+As seen by the graphs, there seems to be a high count of COVID-19 cases
+in the United States and India. While these two countries are in
+different geographic locations, it seems as though the quarantining
+policy wasn't strict enough, wasn't enforced properly, or wasn't
+followed in these two countries. Further research will need to be done
+to see if there is a change in trend based on geographic location.
+However, it is more likely based on this analysis that a refinement to
+the research question could be made to measure the difference in
+COVID-19 case trends in countries based on the strictness of their
+quarantining policies.
+
+\hypertarget{research-question-3-how-can-we-predict-the-number-of-covid-cases-with-forecasting}{%
+\section{Research Question \#3: How can we predict the number of covid
+cases with
+forecasting?}\label{research-question-3-how-can-we-predict-the-number-of-covid-cases-with-forecasting}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{countries<-}\StringTok{ }\KeywordTok{read_csv}\NormalTok{(}\StringTok{"data/countries-aggregated.csv"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## -- Column specification ---------------------------------------------------
+## cols(
+##   Date = col_date(format = ""),
+##   Country = col_character(),
+##   Confirmed = col_double(),
+##   Recovered = col_double(),
+##   Deaths = col_double()
+## )
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{world <-}\StringTok{ }\KeywordTok{read_csv}\NormalTok{(}\StringTok{"data/worldwide-aggregate.csv"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## -- Column specification ---------------------------------------------------
+## cols(
+##   Date = col_date(format = ""),
+##   Confirmed = col_double(),
+##   Recovered = col_double(),
+##   Deaths = col_double(),
+##   `Increase rate` = col_double()
+## )
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#explaratory analysis (de-trend confirmed cases)}
+\CommentTok{#initial plot}
+\KeywordTok{plot}\NormalTok{(world}\OperatorTok{$}\NormalTok{Date, world}\OperatorTok{$}\NormalTok{Confirmed)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{STAT420Project_files/figure-latex/RQ3 model 1-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{y=world}\OperatorTok{$}\NormalTok{Confirmed}
+\NormalTok{time=world}\OperatorTok{$}\NormalTok{Date}
+\KeywordTok{acf}\NormalTok{(y)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{STAT420Project_files/figure-latex/RQ3 model 1-2.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{pacf}\NormalTok{(y)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{STAT420Project_files/figure-latex/RQ3 model 1-3.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#regression to de-trend}
+\NormalTok{y.lm=}\KeywordTok{lm}\NormalTok{(y}\OperatorTok{~}\NormalTok{time)}
+\KeywordTok{plot}\NormalTok{(world}\OperatorTok{$}\NormalTok{Date,y, }\DataTypeTok{type=}\StringTok{'l'}\NormalTok{, }\DataTypeTok{xlab=}\StringTok{'time'}\NormalTok{)}
+\KeywordTok{abline}\NormalTok{(}\DataTypeTok{reg=}\NormalTok{y.lm)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{STAT420Project_files/figure-latex/RQ3 model 1-4.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#check acf after regression}
+\KeywordTok{acf}\NormalTok{(}\KeywordTok{resid}\NormalTok{(y.lm))}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{STAT420Project_files/figure-latex/RQ3 model 1-5.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#detrend through difference}
+\KeywordTok{plot}\NormalTok{(}\KeywordTok{diff}\NormalTok{(}\KeywordTok{resid}\NormalTok{(y.lm)), }\DataTypeTok{type=}\StringTok{'l'}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{STAT420Project_files/figure-latex/RQ3 model 1-6.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{acf}\NormalTok{(}\KeywordTok{diff}\NormalTok{(}\KeywordTok{resid}\NormalTok{(y.lm)))}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{STAT420Project_files/figure-latex/RQ3 model 1-7.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#plot 1st difference, acf, pacf}
+\KeywordTok{plot}\NormalTok{(}\KeywordTok{diff}\NormalTok{(y), }\DataTypeTok{type=}\StringTok{'l'}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{STAT420Project_files/figure-latex/RQ3 model 1-8.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{acf}\NormalTok{(}\KeywordTok{diff}\NormalTok{(y))}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{STAT420Project_files/figure-latex/RQ3 model 1-9.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{pacf}\NormalTok{(}\KeywordTok{diff}\NormalTok{(y))}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{STAT420Project_files/figure-latex/RQ3 model 1-10.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#plot 2nd difference, acf, pacf}
+\KeywordTok{plot}\NormalTok{(}\KeywordTok{diff}\NormalTok{(}\KeywordTok{diff}\NormalTok{(y)), }\DataTypeTok{type=}\StringTok{'l'}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{STAT420Project_files/figure-latex/RQ3 model 1-11.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{acf}\NormalTok{(}\KeywordTok{diff}\NormalTok{(}\KeywordTok{diff}\NormalTok{(y)))}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{STAT420Project_files/figure-latex/RQ3 model 1-12.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{pacf}\NormalTok{(}\KeywordTok{diff}\NormalTok{(}\KeywordTok{diff}\NormalTok{(y)))}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{STAT420Project_files/figure-latex/RQ3 model 1-13.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#plot 1st seasonal difference, acf, pacf}
+\KeywordTok{plot}\NormalTok{(}\KeywordTok{diff}\NormalTok{(}\KeywordTok{diff}\NormalTok{(}\KeywordTok{diff}\NormalTok{(y)), }\DecValTok{7}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{STAT420Project_files/figure-latex/RQ3 model 1-14.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{acf}\NormalTok{(}\KeywordTok{diff}\NormalTok{(}\KeywordTok{diff}\NormalTok{(}\KeywordTok{diff}\NormalTok{(y)), }\DecValTok{7}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{STAT420Project_files/figure-latex/RQ3 model 1-15.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{fin =}\StringTok{ }\KeywordTok{diff}\NormalTok{(}\KeywordTok{diff}\NormalTok{(}\KeywordTok{diff}\NormalTok{(y)), }\DecValTok{7}\NormalTok{)}
+\KeywordTok{pacf}\NormalTok{(fin)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{STAT420Project_files/figure-latex/RQ3 model 1-16.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{confirmed.arima1 =}\StringTok{ }\KeywordTok{arima}\NormalTok{(y, }\DataTypeTok{order=}\KeywordTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{2}\NormalTok{,}\DecValTok{1}\NormalTok{), }\DataTypeTok{seasonal=}\KeywordTok{list}\NormalTok{(}\DataTypeTok{order=}\KeywordTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{1}\NormalTok{,}\DecValTok{1}\NormalTok{), }\DataTypeTok{period=}\DecValTok{7}\NormalTok{))}
+
+\KeywordTok{plot}\NormalTok{(confirmed.arima1}\OperatorTok{$}\NormalTok{residuals, }\DataTypeTok{ylab =} \StringTok{'residuals'}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{STAT420Project_files/figure-latex/RQ3 model 1-17.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{acf}\NormalTok{(confirmed.arima1}\OperatorTok{$}\NormalTok{residuals, }\DataTypeTok{lag.max  =} \DecValTok{50}\NormalTok{, }\DataTypeTok{na.action=}\NormalTok{na.pass)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{STAT420Project_files/figure-latex/RQ3 model 1-18.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{pacf}\NormalTok{(confirmed.arima1}\OperatorTok{$}\NormalTok{residuals, }\DataTypeTok{lag.max  =} \DecValTok{50}\NormalTok{, }\DataTypeTok{na.action=}\NormalTok{na.pass)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{STAT420Project_files/figure-latex/RQ3 model 1-19.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{qqnorm}\NormalTok{(confirmed.arima1}\OperatorTok{$}\NormalTok{residual)}
+\KeywordTok{qqline}\NormalTok{(confirmed.arima1}\OperatorTok{$}\NormalTok{residual)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{STAT420Project_files/figure-latex/RQ3 model 1-20.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{Box.test}\NormalTok{(confirmed.arima1}\OperatorTok{$}\NormalTok{residuals, }\DataTypeTok{fitdf=}\DecValTok{1}\NormalTok{, }\DataTypeTok{lag =} \DecValTok{20}\NormalTok{, }\DataTypeTok{type=}\StringTok{"Ljung"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+##  Box-Ljung test
+## 
+## data:  confirmed.arima1$residuals
+## X-squared = 37.838, df = 19, p-value = 0.006223
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{confirmed.arima1}\OperatorTok{$}\NormalTok{aic}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 15888.83
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{confirmed.arima2 =}\StringTok{ }\KeywordTok{arima}\NormalTok{(y, }\DataTypeTok{order=}\KeywordTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{2}\NormalTok{,}\DecValTok{2}\NormalTok{), }\DataTypeTok{seasonal=}\KeywordTok{list}\NormalTok{(}\DataTypeTok{order=}\KeywordTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{1}\NormalTok{,}\DecValTok{1}\NormalTok{), }\DataTypeTok{period=}\DecValTok{7}\NormalTok{))}
+
+\KeywordTok{plot}\NormalTok{(confirmed.arima2}\OperatorTok{$}\NormalTok{residuals, }\DataTypeTok{ylab =} \StringTok{'residuals'}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{STAT420Project_files/figure-latex/RQ3 model 2-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{acf}\NormalTok{(confirmed.arima2}\OperatorTok{$}\NormalTok{residuals, }\DataTypeTok{lag.max  =} \DecValTok{50}\NormalTok{, }\DataTypeTok{na.action=}\NormalTok{na.pass)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{STAT420Project_files/figure-latex/RQ3 model 2-2.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{qqnorm}\NormalTok{(confirmed.arima2}\OperatorTok{$}\NormalTok{residual)}
+\KeywordTok{qqline}\NormalTok{(confirmed.arima2}\OperatorTok{$}\NormalTok{residual)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{STAT420Project_files/figure-latex/RQ3 model 2-3.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{confirmed.arima2}\OperatorTok{$}\NormalTok{aic}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 15889.8
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{Box.test}\NormalTok{(confirmed.arima2}\OperatorTok{$}\NormalTok{residuals, }\DataTypeTok{lag =} \DecValTok{20}\NormalTok{, }\DataTypeTok{fitdf=}\DecValTok{2}\NormalTok{, }\DataTypeTok{type=}\StringTok{"Ljung"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+##  Box-Ljung test
+## 
+## data:  confirmed.arima2$residuals
+## X-squared = 38.272, df = 18, p-value = 0.003564
+\end{verbatim}
+
+We found that model 1 would be the best which is the
+ARIMA(0,2,1)x(0,1,1)7. Next, we take a closer look at the overall
+forecasting using the model.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#Forecasting with model 1 confirmed cases}
+\NormalTok{forecast=}\KeywordTok{predict}\NormalTok{(confirmed.arima1, }\DataTypeTok{n.ahead =}\DecValTok{50}\NormalTok{)}
+
+\CommentTok{#overall forecast}
+\KeywordTok{plot}\NormalTok{(y, }\DataTypeTok{xlim =} \KeywordTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{700}\NormalTok{), }\DataTypeTok{ylim =} \KeywordTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{262659973}\NormalTok{), }\DataTypeTok{type=}\StringTok{'l'}\NormalTok{)}
+\KeywordTok{lines}\NormalTok{(forecast}\OperatorTok{$}\NormalTok{pred, }\DataTypeTok{col=}\StringTok{"green"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{STAT420Project_files/figure-latex/RQ3 forecast-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#closer look}
+\KeywordTok{sarima.for}\NormalTok{(world}\OperatorTok{$}\NormalTok{Confirmed, }\DecValTok{50}\NormalTok{, }\DecValTok{1}\NormalTok{,}\DecValTok{2}\NormalTok{,}\DecValTok{0}\NormalTok{,}\DecValTok{1}\NormalTok{,}\DecValTok{1}\NormalTok{,}\DecValTok{0}\NormalTok{,}\DecValTok{7}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{STAT420Project_files/figure-latex/RQ3 forecast-2.pdf}
+
+\begin{verbatim}
+## $pred
+## Time Series:
+## Start = 654 
+## End = 703 
+## Frequency = 1 
+##  [1] 249145977 249569354 249918734 250390702 250875207 251434883 251969777
+##  [8] 252540513 252991470 253367752 253867722 254374276 254961178 255531995
+## [15] 256134481 256618877 257028887 257562117 258104469 258724961 259325660
+## [22] 259959807 260475143 260915971 261480218 262052506 262703874 263337031
+## [29] 264002877 264550220 265023107 265619327 266224049 266907451 267571968
+## [36] 268269496 268848391 269352807 269980594 270616685 271331627 272027971
+## [43] 272757190 273367830 273904002 274563528 275231443 275978135 276706107
+## [50] 277467013
+## 
+## $se
+## Time Series:
+## Start = 654 
+## End = 703 
+## Frequency = 1 
+##  [1]    63587.29   114109.83   182516.68   257550.42   342173.55
+##  [6]   433804.01   532686.62   658740.80   796433.06   949547.51
+## [11]  1113562.83  1288781.03  1473660.36  1667883.50  1892997.21
+## [16]  2134018.55  2395121.07  2671526.66  2963453.96  3269058.92
+## [21]  3587843.00  3936424.14  4303351.48  4691761.83  5097864.39
+## [26]  5521680.34  5961608.56  6417092.10  6903788.23  7411186.45
+## [31]  7942291.14  8493580.81  9065066.63  9655202.73 10263411.78
+## [36] 10903670.63 11566651.92 12255031.04 12965638.58 13698442.99
+## [41] 14452002.92 15225737.22 16032708.35 16864276.31 17722955.53
+## [46] 18605791.27 19512743.67 20442440.99 21394308.38 22380513.77
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#initial plot}
+\KeywordTok{ts.plot}\NormalTok{(world}\OperatorTok{$}\NormalTok{Recovered[}\DecValTok{0}\OperatorTok{:}\DecValTok{500}\NormalTok{])}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{STAT420Project_files/figure-latex/RQ3 exploratory-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{x =}\StringTok{ }\NormalTok{world}\OperatorTok{$}\NormalTok{Recovered[}\DecValTok{0}\OperatorTok{:}\DecValTok{500}\NormalTok{]}
+\KeywordTok{par}\NormalTok{(}\DataTypeTok{mfrow=}\KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{2}\NormalTok{))}
+\KeywordTok{acf}\NormalTok{(x)}
+\KeywordTok{pacf}\NormalTok{(x)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{STAT420Project_files/figure-latex/RQ3 exploratory-2.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#1st difference plot, acf, pacf}
+\KeywordTok{par}\NormalTok{(}\DataTypeTok{mfrow=}\KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DecValTok{1}\NormalTok{))}
+\KeywordTok{diff}\NormalTok{(x)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   [1]        2        7        3       14        9       43       19
+##   [8]       18       80       62      189      151      230      273
+##  [15]      363      523      601      630      702      735      467
+##  [22]     1143     1767     1336     1470     1720     1765     1771
+##  [29]     2058      713     3998      505     1832     2678     2481
+##  [36]     2894     3432     3071     2936     2884     2622     2943
+##  [43]     2626     2068     2494     2337     1800     1907     2597
+##  [50]     1329     1927     2367     3409     2055     2744     2487
+##  [57]     1641     2445     4247     6217      488     9619     5779
+##  [64]     8372     8785     8511     9456    15336    13590    15272
+##  [71]    17143    15422    20412    13836    16709    23262    28882
+##  [78]    25254    21738    26250    19383    27257    25074    36539
+##  [85]    30883    26184    23866    31783    22178    34802    30085
+##  [92]    28730    50029    27755    28812    27884    33212    42077
+##  [99]    65116    38157    40651    32533    34086    36473    46119
+## [106]    39525    36413    53441    33809    46885    37042    55872
+## [113]    39711    48103    56411    41008    52916    52052    58970
+## [120]    51220   108547    54834    55527    63729    55152    63327
+## [127]    66863    77265    70450    76384    54925   104112    79091
+## [134]    70070    69165    72204    55109   151611    82270    79171
+## [141]    85879    79720    85892    70819    80275    97863   118831
+## [148]    81163    94990   115854    68686    91633   104055   115751
+## [155]    92884   105980   106286    89203    94571   117340   115914
+## [162]   284934   109888   195760   119363   123699   145033   158056
+## [169]   134618   139446   125692   111836   140323   142252   159806
+## [176]   152485   183421   150787    88058   159128   174696   179732
+## [183]   176230   228300   219812   143301   171383   170458   202586
+## [190]   213519   199606   180911   138724   222445   223657   221695
+## [197]   188807   192046   200244   178778   164211   305068   240645
+## [204]   163916   283242   168604   232954   211012   227595   217997
+## [211]   207790   168494   209917   216531   199421   231549   225734
+## [218]   207237   199118   211413   210240   200790   257962   219237
+## [225]   221369   213501   200988   211791   197548   201797   240267
+## [232]   216661   223670   222934   187848   228499   226287   229477
+## [239]   220211   251149   236985   237077   245478   219393   263413
+## [246]   255670   239208   262143   213879   222542   241284   248218
+## [253]   221542   172285   255601   222159   237468   232626   255191
+## [260]   219506   206790   195405   222640   200119   192445   212285
+## [267]   207327   203014   198283   201511   202531   211447   211222
+## [274]   226793   206734   211581   197258   239135   589705   265962
+## [281]   246751   255774   244329   257947   280137   251573   279319
+## [288]   303655   288361   299016   253240   257053   257360   380224
+## [295]   226239   302132   277819   230760   390730   433591   363110
+## [302]   374299   355424   339270   273724   411213   372179   437410
+## [309]   366876   381626   359706   318283   402256   476204   462926
+## [316]   426984   490617   435948   316044   413139   440771   426480
+## [323]   491226   478140  1504943   395119 -5989997   358164   362220
+## [330]   375409   317728   351586   276829   343220   363185   324140
+## [337]   314672   291606   408164   292388   298426   353095   388245
+## [344]   298332   303304   255185   268482   290408   315361   313125
+## [351]   323931   297263   330245   270550   290288   343557   366061
+## [358]   372845   320622   317055   315715   318753   402944   327771
+## [365]   366139   381757   316493   310957   314441   329543   340769
+## [372]   315659   364107   351166   288899   272642   350190   329847
+## [379]   293989   281287   294557   277435   232834   371608   269308
+## [386]   276085   287599   246243   195431   288613   235405   293941
+## [393]   236618   234636   269216   217257   182570   278630   209459
+## [400]   227692   260268   250722   175177   214926   270104   229408
+## [407]   250280   226360   236503   238320   274558   262233   235356
+## [414]   272617   268556   252532   245688   289879   266485   264536
+## [421]   269076   279061   258211   280099   334629   313142   335642
+## [428]   311817   364586   305253   328788   304436   335243   382509
+## [435]   344786   320207   366001   348188   347813   369996   483305
+## [442]   395259   453713   384994   530472   394732   486462   446890
+## [449]   444402   504117   518536   580191   535375   604837   512300
+## [456]   636296   639832   576291   533814   687366   680904   596665
+## [463]   707316   686596   682450   693014   643489   656900   713482
+## [470]   675612   696129   711005   662793   628686   751004   647549
+## [477]   690117   665347   642537   667404   744462   743113   698027
+## [484]   636689   614788   616761   501971   627592   577063   555813
+## [491]   697358   554963   507600   489929   529169   583883   528374
+## [498]   429190   525502
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{ts.plot}\NormalTok{(}\KeywordTok{diff}\NormalTok{(x))}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{STAT420Project_files/figure-latex/RQ3 exploratory-3.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{par}\NormalTok{(}\DataTypeTok{mfrow=}\KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DecValTok{2}\NormalTok{))}
+\KeywordTok{acf}\NormalTok{(}\KeywordTok{diff}\NormalTok{(x))}
+\KeywordTok{pacf}\NormalTok{(}\KeywordTok{diff}\NormalTok{(x))}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{STAT420Project_files/figure-latex/RQ3 exploratory-4.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#2st difference plot, acf, pacf}
+\KeywordTok{par}\NormalTok{(}\DataTypeTok{mfrow=}\KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DecValTok{1}\NormalTok{))}
+\KeywordTok{ts.plot}\NormalTok{(}\KeywordTok{diff}\NormalTok{(}\KeywordTok{diff}\NormalTok{(x)))}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{STAT420Project_files/figure-latex/RQ3 exploratory-5.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{par}\NormalTok{(}\DataTypeTok{mfrow=}\KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DecValTok{2}\NormalTok{))}
+\KeywordTok{acf}\NormalTok{(}\KeywordTok{diff}\NormalTok{(}\KeywordTok{diff}\NormalTok{(x)))}
+\KeywordTok{pacf}\NormalTok{(}\KeywordTok{diff}\NormalTok{(}\KeywordTok{diff}\NormalTok{(x)))}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{STAT420Project_files/figure-latex/RQ3 exploratory-6.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{par}\NormalTok{(}\DataTypeTok{mfrow=}\KeywordTok{c}\NormalTok{(}\DecValTok{2}\NormalTok{, }\DecValTok{2}\NormalTok{))}
+\NormalTok{confirmed.arima3 =}\StringTok{ }\KeywordTok{arima}\NormalTok{(x, }\DataTypeTok{order=}\KeywordTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{2}\NormalTok{, }\DecValTok{1}\NormalTok{))}
+\KeywordTok{plot}\NormalTok{(confirmed.arima3}\OperatorTok{$}\NormalTok{residuals, }\DataTypeTok{ylab =} \StringTok{'residuals'}\NormalTok{)}
+\KeywordTok{acf}\NormalTok{(confirmed.arima3}\OperatorTok{$}\NormalTok{residuals, }\DataTypeTok{lag.max  =} \DecValTok{50}\NormalTok{)}
+\KeywordTok{pacf}\NormalTok{(confirmed.arima3}\OperatorTok{$}\NormalTok{residuals, }\DataTypeTok{lag.max  =} \DecValTok{50}\NormalTok{)}
+
+\KeywordTok{qqnorm}\NormalTok{(confirmed.arima3}\OperatorTok{$}\NormalTok{residual)}
+\KeywordTok{qqline}\NormalTok{(confirmed.arima3}\OperatorTok{$}\NormalTok{residual)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{STAT420Project_files/figure-latex/RQ3 arima3 \& arima4-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{Box.test}\NormalTok{(confirmed.arima3}\OperatorTok{$}\NormalTok{residuals, }\DataTypeTok{lag =} \DecValTok{20}\NormalTok{, }\DataTypeTok{fitdf=}\DecValTok{1}\NormalTok{, }\DataTypeTok{type=}\StringTok{"Ljung"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+##  Box-Ljung test
+## 
+## data:  confirmed.arima3$residuals
+## X-squared = 13.615, df = 19, p-value = 0.8057
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{confirmed.arima3}\OperatorTok{$}\NormalTok{aic}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 13982.13
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{confirmed.arima4 =}\StringTok{ }\KeywordTok{arima}\NormalTok{(x, }\DataTypeTok{order=}\KeywordTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{2}\NormalTok{, }\DecValTok{2}\NormalTok{))}
+\KeywordTok{plot}\NormalTok{(confirmed.arima4}\OperatorTok{$}\NormalTok{residuals, }\DataTypeTok{ylab =} \StringTok{'residuals'}\NormalTok{)}
+\KeywordTok{acf}\NormalTok{(confirmed.arima4}\OperatorTok{$}\NormalTok{residuals, }\DataTypeTok{lag.max  =} \DecValTok{50}\NormalTok{)}
+\KeywordTok{pacf}\NormalTok{(confirmed.arima4}\OperatorTok{$}\NormalTok{residuals, }\DataTypeTok{lag.max  =} \DecValTok{50}\NormalTok{)}
+
+\KeywordTok{qqnorm}\NormalTok{(confirmed.arima4}\OperatorTok{$}\NormalTok{residual)}
+\KeywordTok{qqline}\NormalTok{(confirmed.arima4}\OperatorTok{$}\NormalTok{residual)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{STAT420Project_files/figure-latex/RQ3 arima3 \& arima4-2.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{Box.test}\NormalTok{(confirmed.arima4}\OperatorTok{$}\NormalTok{residuals, }\DataTypeTok{lag =} \DecValTok{20}\NormalTok{, }\DataTypeTok{fitdf=}\DecValTok{1}\NormalTok{, }\DataTypeTok{type=}\StringTok{"Ljung"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+##  Box-Ljung test
+## 
+## data:  confirmed.arima4$residuals
+## X-squared = 13.367, df = 19, p-value = 0.8193
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{confirmed.arima4}\OperatorTok{$}\NormalTok{aic}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 13983.96
+\end{verbatim}
+
+We can see that the ARIMA(0,2,1) model is the best, so we forecast with
+this model
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{##Forecasting with recovered cases}
+\NormalTok{forecast=}\KeywordTok{predict}\NormalTok{(confirmed.arima3, }\DataTypeTok{n.ahead =}\DecValTok{50}\NormalTok{)}
+
+\KeywordTok{plot}\NormalTok{(x, }\DataTypeTok{type =} \StringTok{'l'}\NormalTok{, }\DataTypeTok{xlim =} \KeywordTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{550}\NormalTok{), }\DataTypeTok{ylim=}\KeywordTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{139575581}\NormalTok{))}
+\KeywordTok{lines}\NormalTok{(forecast}\OperatorTok{$}\NormalTok{pred, }\DataTypeTok{col =}\StringTok{'green'}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{STAT420Project_files/figure-latex/RQ3 forecast2-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#closer look}
+\KeywordTok{sarima.for}\NormalTok{(x,}\DecValTok{30}\NormalTok{, }\DecValTok{0}\NormalTok{,}\DecValTok{2}\NormalTok{,}\DecValTok{1}\NormalTok{, }\DecValTok{0}\NormalTok{,}\DecValTok{0}\NormalTok{,}\DecValTok{0}\NormalTok{,}\DecValTok{0}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{STAT420Project_files/figure-latex/RQ3 forecast2-2.pdf}
+
+\begin{verbatim}
+## $pred
+## Time Series:
+## Start = 501 
+## End = 530 
+## Frequency = 1 
+##  [1] 110805011 111383306 111961602 112539897 113118193 113696488 114274784
+##  [8] 114853079 115431375 116009670 116587966 117166261 117744557 118322852
+## [15] 118901148 119479443 120057739 120636034 121214330 121792625 122370921
+## [22] 122949216 123527512 124105808 124684103 125262399 125840694 126418990
+## [29] 126997285 127575581
+## 
+## $se
+## Time Series:
+## Start = 501 
+## End = 530 
+## Frequency = 1 
+##  [1]  300425.9  435192.9  545736.4  644963.9  737740.0  826492.9  912625.7
+##  [8]  997026.9 1080295.4 1162853.7 1245010.6 1326997.6 1408992.2 1491133.0
+## [15] 1573529.5 1656269.3 1739423.3 1823048.9 1907193.6 1991895.9 2077188.2
+## [22] 2163096.8 2249643.9 2336847.6 2424723.0 2513282.5 2602536.5 2692493.1
+## [29] 2783159.2 2874540.1
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#de-trend deaths}
+\KeywordTok{ts.plot}\NormalTok{(world}\OperatorTok{$}\NormalTok{Deaths)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{STAT420Project_files/figure-latex/RQ3 exploratory continued-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{d =}\StringTok{ }\NormalTok{world}\OperatorTok{$}\NormalTok{Deaths}
+\KeywordTok{par}\NormalTok{(}\DataTypeTok{mfrow=}\KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DecValTok{2}\NormalTok{))}
+\KeywordTok{acf}\NormalTok{(d)}
+\KeywordTok{pacf}\NormalTok{(d)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{STAT420Project_files/figure-latex/RQ3 exploratory continued-2.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#1st difference plot, acf, pacf}
+\KeywordTok{par}\NormalTok{(}\DataTypeTok{mfrow=}\KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DecValTok{1}\NormalTok{))}
+\KeywordTok{ts.plot}\NormalTok{((}\KeywordTok{diff}\NormalTok{(d)))}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{STAT420Project_files/figure-latex/RQ3 exploratory continued-3.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{par}\NormalTok{(}\DataTypeTok{mfrow=}\KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DecValTok{2}\NormalTok{))}
+\KeywordTok{acf}\NormalTok{(}\KeywordTok{diff}\NormalTok{(d), }\DataTypeTok{lag.max=}\NormalTok{(}\DecValTok{50}\NormalTok{))}
+\KeywordTok{pacf}\NormalTok{(}\KeywordTok{diff}\NormalTok{(d),  }\DataTypeTok{lag.max=}\NormalTok{(}\DecValTok{50}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{STAT420Project_files/figure-latex/RQ3 exploratory continued-4.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#2nd difference plot, acf, pacf}
+\KeywordTok{par}\NormalTok{(}\DataTypeTok{mfrow=}\KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DecValTok{1}\NormalTok{))}
+\KeywordTok{ts.plot}\NormalTok{((}\KeywordTok{diff}\NormalTok{(}\KeywordTok{diff}\NormalTok{(d))))}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{STAT420Project_files/figure-latex/RQ3 exploratory continued-5.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{par}\NormalTok{(}\DataTypeTok{mfrow=}\KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DecValTok{2}\NormalTok{))}
+\KeywordTok{acf}\NormalTok{(}\KeywordTok{diff}\NormalTok{(}\KeywordTok{diff}\NormalTok{(d)), }\DataTypeTok{lag.max=}\NormalTok{(}\DecValTok{50}\NormalTok{))}
+\KeywordTok{pacf}\NormalTok{(}\KeywordTok{diff}\NormalTok{(}\KeywordTok{diff}\NormalTok{(d)),  }\DataTypeTok{lag.max=}\NormalTok{(}\DecValTok{50}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{STAT420Project_files/figure-latex/RQ3 exploratory continued-6.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#1st seasonal difference period 7 plot, acf, pacf}
+\KeywordTok{acf}\NormalTok{(}\KeywordTok{diff}\NormalTok{(}\KeywordTok{diff}\NormalTok{(}\KeywordTok{diff}\NormalTok{(d)), }\DecValTok{7}\NormalTok{), }\DataTypeTok{lag.max=}\DecValTok{50}\NormalTok{)}
+\KeywordTok{pacf}\NormalTok{(}\KeywordTok{diff}\NormalTok{(}\KeywordTok{diff}\NormalTok{(}\KeywordTok{diff}\NormalTok{(d)), }\DecValTok{7}\NormalTok{), }\DataTypeTok{lag.max=}\DecValTok{50}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{STAT420Project_files/figure-latex/RQ3 exploratory continued-7.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{confirmed.arima5 =}\StringTok{ }\KeywordTok{arima}\NormalTok{(d, }\DataTypeTok{order=}\KeywordTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{1}\NormalTok{, }\DecValTok{1}\NormalTok{),  }\DataTypeTok{seasonal=}\KeywordTok{list}\NormalTok{(}\DataTypeTok{order=}\KeywordTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{1}\NormalTok{,}\DecValTok{2}\NormalTok{), }\DataTypeTok{period=}\DecValTok{7}\NormalTok{))}
+\KeywordTok{par}\NormalTok{(}\DataTypeTok{mfrow=}\KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DecValTok{1}\NormalTok{))}
+\KeywordTok{plot}\NormalTok{(confirmed.arima5}\OperatorTok{$}\NormalTok{residuals, }\DataTypeTok{ylab =} \StringTok{'residuals'}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{STAT420Project_files/figure-latex/RQ3 arima5 \& arima6-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{par}\NormalTok{(}\DataTypeTok{mfrow=}\KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DecValTok{2}\NormalTok{))}
+\KeywordTok{acf}\NormalTok{(confirmed.arima5}\OperatorTok{$}\NormalTok{residuals, }\DataTypeTok{lag.max  =} \DecValTok{50}\NormalTok{)}
+\KeywordTok{pacf}\NormalTok{(confirmed.arima5}\OperatorTok{$}\NormalTok{residuals, }\DataTypeTok{lag.max  =} \DecValTok{50}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{STAT420Project_files/figure-latex/RQ3 arima5 \& arima6-2.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{qqnorm}\NormalTok{(confirmed.arima5}\OperatorTok{$}\NormalTok{residual)}
+\KeywordTok{qqline}\NormalTok{(confirmed.arima5}\OperatorTok{$}\NormalTok{residual)}
+
+\KeywordTok{Box.test}\NormalTok{(confirmed.arima5}\OperatorTok{$}\NormalTok{residuals, }\DataTypeTok{lag =} \DecValTok{20}\NormalTok{,}\DataTypeTok{fitdf=}\DecValTok{1}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+##  Box-Pierce test
+## 
+## data:  confirmed.arima5$residuals
+## X-squared = 395.64, df = 19, p-value < 2.2e-16
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{confirmed.arima5}\OperatorTok{$}\NormalTok{aic}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 11043
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{confirmed.arima6 =}\StringTok{ }\KeywordTok{arima}\NormalTok{(d, }\DataTypeTok{order=}\KeywordTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{1}\NormalTok{, }\DecValTok{1}\NormalTok{),  }\DataTypeTok{seasonal=}\KeywordTok{list}\NormalTok{(}\DataTypeTok{order=}\KeywordTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{1}\NormalTok{,}\DecValTok{1}\NormalTok{), }\DataTypeTok{period=}\DecValTok{7}\NormalTok{))}
+\KeywordTok{par}\NormalTok{(}\DataTypeTok{mfrow=}\KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DecValTok{1}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{STAT420Project_files/figure-latex/RQ3 arima5 \& arima6-3.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{plot}\NormalTok{(confirmed.arima6}\OperatorTok{$}\NormalTok{residuals, }\DataTypeTok{ylab =} \StringTok{'residuals'}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{STAT420Project_files/figure-latex/RQ3 arima5 \& arima6-4.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{par}\NormalTok{(}\DataTypeTok{mfrow=}\KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DecValTok{2}\NormalTok{))}
+\KeywordTok{acf}\NormalTok{(confirmed.arima6}\OperatorTok{$}\NormalTok{residuals, }\DataTypeTok{lag.max  =} \DecValTok{50}\NormalTok{)}
+\KeywordTok{pacf}\NormalTok{(confirmed.arima6}\OperatorTok{$}\NormalTok{residuals, }\DataTypeTok{lag.max  =} \DecValTok{50}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{STAT420Project_files/figure-latex/RQ3 arima5 \& arima6-5.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{qqnorm}\NormalTok{(confirmed.arima6}\OperatorTok{$}\NormalTok{residual)}
+\KeywordTok{qqline}\NormalTok{(confirmed.arima6}\OperatorTok{$}\NormalTok{residual)}
+
+\KeywordTok{Box.test}\NormalTok{(confirmed.arima6}\OperatorTok{$}\NormalTok{residuals, }\DataTypeTok{lag =} \DecValTok{20}\NormalTok{,}\DataTypeTok{fitdf=}\DecValTok{1}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+##  Box-Pierce test
+## 
+## data:  confirmed.arima6$residuals
+## X-squared = 472.03, df = 19, p-value < 2.2e-16
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{confirmed.arima6}\OperatorTok{$}\NormalTok{aic}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 11048.23
+\end{verbatim}
+
+\includegraphics{STAT420Project_files/figure-latex/RQ3 arima5 \& arima6-6.pdf}
+We can see that the ARIMA(0,1,1)x(0,1,2)7 model is the best so we use it
+to forecast deaths
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{forecast=}\KeywordTok{predict}\NormalTok{(confirmed.arima5, }\DataTypeTok{n.ahead =}\DecValTok{50}\NormalTok{)}
+
+\KeywordTok{plot}\NormalTok{(d, }\DataTypeTok{type =} \StringTok{'l'}\NormalTok{, }\DataTypeTok{ylim=} \KeywordTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{5236472}\NormalTok{), }\DataTypeTok{xlim=} \KeywordTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{700}\NormalTok{))}
+\KeywordTok{lines}\NormalTok{(forecast}\OperatorTok{$}\NormalTok{pred, }\DataTypeTok{col =}\StringTok{'green'}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{STAT420Project_files/figure-latex/RQ3 forecast3-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#closer look}
+\KeywordTok{sarima.for}\NormalTok{(d, }\DecValTok{50}\NormalTok{, }\DecValTok{0}\NormalTok{,}\DecValTok{1}\NormalTok{,}\DecValTok{1}\NormalTok{,}\DecValTok{0}\NormalTok{,}\DecValTok{1}\NormalTok{,}\DecValTok{2}\NormalTok{,}\DecValTok{7}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{STAT420Project_files/figure-latex/RQ3 forecast3-2.pdf}
+
+\begin{verbatim}
+## $pred
+## Time Series:
+## Start = 654 
+## End = 703 
+## Frequency = 1 
+##  [1] 5037180 5043053 5047481 5053859 5061472 5070014 5077757 5085683
+##  [9] 5091603 5096032 5102383 5109941 5118411 5126067 5133972 5139893
+## [17] 5144322 5150672 5158230 5166701 5174356 5182262 5188182 5192611
+## [25] 5198962 5206520 5214991 5222646 5230552 5236472 5240901 5247252
+## [33] 5254810 5263280 5270936 5278841 5284762 5289191 5295541 5303099
+## [41] 5311570 5319225 5327131 5333051 5337480 5343831 5351389 5359860
+## [49] 5367515 5375421
+## 
+## $se
+## Time Series:
+## Start = 654 
+## End = 703 
+## Frequency = 1 
+##  [1]  1254.777  2027.618  2578.372  3030.638  3423.673  3776.017  4098.179
+##  [8]  4783.257  5493.691  6122.232  6691.997  7216.918  7706.166  8166.155
+## [15]  8971.459  9817.810 10596.780 11322.282 12004.016 12649.061 13262.770
+## [22] 14174.200 15123.415 16016.473 16862.300 17667.679 18437.912 19177.235
+## [29] 20181.310 21220.475 22211.075 23159.342 24070.281 24947.980 25795.832
+## [36] 26884.235 28005.447 29083.467 30122.933 31127.706 32101.044 33045.726
+## [43] 34212.301 35409.749 36568.008 37690.689 38780.883 39841.257 40874.131
+## [50] 42113.971
+\end{verbatim}
+
+The overall conclusion regarding this question is the confirmed cases
+and deaths both can be forecasted using an ARIMA(0,2,1)x(0,1,1)7 model.
+However, recoveries doesn't seem to have a seasonal component so it can
+be modeled with ARIMA(0,2,1). The period of 7 for seasonality of
+confirmed cases and deaths can be explained by the trends we see weekly
+and the way the data is collected. Oftentimes there are patterns
+depending on the day of the week.
+
+\hypertarget{research-question-4-what-times-of-the-year-do-the-most-covid-cases-andor-deaths-occur}{%
+\section{Research Question \#4: What times of the year do the most covid
+cases and/or deaths
+occur?}\label{research-question-4-what-times-of-the-year-do-the-most-covid-cases-andor-deaths-occur}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#Worldwide Confirmed Cases}
+\NormalTok{worldwide_data <-}\StringTok{ }\KeywordTok{read.csv}\NormalTok{(}\StringTok{"data/worldwide-aggregate.csv"}\NormalTok{)}
+\NormalTok{worldwide_data}\OperatorTok{$}\NormalTok{Date=}\KeywordTok{as.Date}\NormalTok{(}\KeywordTok{with_tz}\NormalTok{(worldwide_data}\OperatorTok{$}\NormalTok{Date, }\StringTok{"America/New_York"}\NormalTok{))}
+\KeywordTok{ggplot}\NormalTok{(worldwide_data, }\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x=}\NormalTok{Date, }\DataTypeTok{y=}\NormalTok{Confirmed))}\OperatorTok{+}
+\StringTok{  }\KeywordTok{geom_line}\NormalTok{(}\DataTypeTok{color =} \StringTok{'orange'}\NormalTok{)}\OperatorTok{+}
+\StringTok{  }\KeywordTok{labs}\NormalTok{(}\DataTypeTok{x=}\StringTok{'time'}\NormalTok{, }\DataTypeTok{y=}\StringTok{'# Deaths'}\NormalTok{, }\DataTypeTok{title=}\StringTok{'Worldwide Confirmed Cases'}\NormalTok{)}\OperatorTok{+}
+\StringTok{  }\KeywordTok{scale_x_date}\NormalTok{(}\DataTypeTok{date_breaks =} \StringTok{"2 months"}\NormalTok{ , }\DataTypeTok{date_labels =} \StringTok{"%b-%y"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{STAT420Project_files/figure-latex/unnamed-chunk-1-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{a =}\StringTok{ }\NormalTok{(}\KeywordTok{diff}\NormalTok{(}\KeywordTok{diff}\NormalTok{(worldwide_data}\OperatorTok{$}\NormalTok{Confirmed)))}
+\KeywordTok{plot.ts}\NormalTok{(a)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{STAT420Project_files/figure-latex/unnamed-chunk-1-2.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{acf}\NormalTok{(a)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{STAT420Project_files/figure-latex/unnamed-chunk-1-3.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{pacf}\NormalTok{(a)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{STAT420Project_files/figure-latex/unnamed-chunk-1-4.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{ww_arima =}\StringTok{ }\KeywordTok{arima}\NormalTok{(worldwide_data}\OperatorTok{$}\NormalTok{Confirmed, }\DataTypeTok{order=} \KeywordTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{2}\NormalTok{,}\DecValTok{0}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#Worldwide Increase Rate}
+\NormalTok{worldwide_data}\OperatorTok{$}\NormalTok{Date=}\KeywordTok{as.Date}\NormalTok{(}\KeywordTok{with_tz}\NormalTok{(worldwide_data}\OperatorTok{$}\NormalTok{Date, }\StringTok{"America/New_York"}\NormalTok{))}
+\KeywordTok{ggplot}\NormalTok{(worldwide_data, }\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x=}\NormalTok{Date, }\DataTypeTok{y=}\NormalTok{Increase.rate))}\OperatorTok{+}
+\StringTok{  }\KeywordTok{geom_line}\NormalTok{(}\DataTypeTok{color =} \StringTok{'orange'}\NormalTok{)}\OperatorTok{+}
+\StringTok{  }\KeywordTok{labs}\NormalTok{(}\DataTypeTok{x=}\StringTok{'time'}\NormalTok{, }\DataTypeTok{y=}\StringTok{'# Deaths'}\NormalTok{, }\DataTypeTok{title=}\StringTok{'Worldwide Confirmed Cases'}\NormalTok{)}\OperatorTok{+}
+\StringTok{  }\KeywordTok{scale_x_date}\NormalTok{(}\DataTypeTok{date_breaks =} \StringTok{"2 months"}\NormalTok{ , }\DataTypeTok{date_labels =} \StringTok{"%b-%y"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: Removed 1 row(s) containing missing values (geom_path).
+\end{verbatim}
+
+\includegraphics{STAT420Project_files/figure-latex/unnamed-chunk-2-1.pdf}
+
+Based on the plots, we can see there is a slight seasonal trend with
+Confirmed COVID cases on the worldwide scale approximately every 3
+months. There is the initial spike of increase rate at the start of the
+pandemic and another notable drastic increase in December 2020.
+
+
+\end{document}
