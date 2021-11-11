@@ -2,7 +2,7 @@
 title: "STAT 420 Project"
 author: "Group 9"
 date: "11/10/2021"
-output: html_document
+output: pdf_document
 ---
 
 ```{r setup, include=FALSE}
