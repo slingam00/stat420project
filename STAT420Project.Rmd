@@ -134,109 +134,92 @@ We can conclude that confirmed cases and deaths are highly correlated with a cor
 
 # Research Question #2: How does the trend of covid cases change based on geographic location?
 
+
 ```{r RQ2}
+updated_countries <- countries %>% 
+    group_by(Country, month = lubridate::floor_date(Date, "month")) %>%
+    summarize(monthly_covid_cases = sum(Confirmed))
 
-### North American Countries
-us_country <- countries[countries$Country == "US",]
-canada <- countries[countries$Country == "Canada",]
-mexico <- countries[countries$Country == "Mexico",]
+# North American Countries
+us_country <- updated_countries[updated_countries$Country == "US",]
+canada <- updated_countries[updated_countries$Country == "Canada",]
+mexico <- updated_countries[updated_countries$Country == "Mexico",]
 
-us_country$Date=with_tz(us_country$Date, "America/New_York")
-canada$Date=with_tz(canada$Date, "America/New_York")
-mexico$Date=with_tz(mexico$Date, "America/New_York")
+us_country$Date=with_tz(us_country$month, "America/New_York")
+canada$Date=with_tz(canada$month, "America/New_York")
+mexico$Date=with_tz(mexico$month, "America/New_York")
 
-us_country$per = us_country$Confirmed/100000
-canada$per = canada$Confirmed/100000
-mexico$per = mexico$Confirmed/100000
-
-(ggplot(us_country, aes(x = Date, y = `per`)) +
-  geom_line(aes(y = `per`, color = "USA"))  +
+(ggplot(us_country, aes(x = Date, y = `monthly_covid_cases`)) +
+  geom_line(aes(y = `monthly_covid_cases`, color = "USA"))  +
   geom_line(data = canada, aes(color = "Canada")) +
   geom_line(data = mexico, aes(color = "Mexico")) +
   xlab('Date') +
   ylab('Count') +
-  ggtitle('North American Country Covid Cases per 100,000'))
-
-### Asian Countries
-india <- countries[countries$Country == "India",]
-china <- countries[countries$Country == "China",]
-japan <- countries[countries$Country == "Japan",]
-
-india$Date=with_tz(india$Date, "America/New_York")
-china$Date=with_tz(china$Date, "America/New_York")
-japan$Date=with_tz(japan$Date, "America/New_York")
-
-india$per = india$Confirmed/100000
-china$per = china$Confirmed/100000
-japan$per = japan$Confirmed/100000
+  ggtitle('North American Countries Confirmed Covid Cases per Month'))
 
 
-(ggplot(india, aes(x = Date, y = `per`)) +
-  geom_line(aes(y = `per`, color = "India"))  +
+# Asian Countries
+india <- updated_countries[updated_countries$Country == "India",]
+china <- updated_countries[updated_countries$Country == "China",]
+japan <- updated_countries[updated_countries$Country == "Japan",]
+
+india$Date=with_tz(india$month, "America/New_York")
+china$Date=with_tz(china$month, "America/New_York")
+japan$Date=with_tz(japan$month, "America/New_York")
+
+
+(ggplot(india, aes(x = Date, y = `monthly_covid_cases`)) +
+  geom_line(aes(y = `monthly_covid_cases`, color = "India"))  +
   geom_line(data = china, aes(color = "China")) +
   geom_line(data = japan, aes(color = "Japan")) +
   xlab('Date') +
   ylab('Count') +
-  ggtitle('Asian Country Covid Cases per 100,000'))
-
+  ggtitle('Asian Countries Confirmed Covid Cases per Month'))
 ```
+
 
 As seen by the graphs, there seems to be a high count of COVID-19 cases in the United States and India. While these two countries are in different geographic locations, it seems as though the quarantining policy wasn't strict enough, wasn't enforced properly, or wasn't followed in these two countries. Further research will need to be done to see if there is a change in trend based on geographic location. However, it is more likely based on this analysis that a refinement to the research question could be made to measure the difference in COVID-19 case trends in countries based on the strictness of their quarantining policies.
 
-
 ```{r}
 ### Strictest Countries
-australia <- countries[countries$Country == "Australia",]
-argentina <- countries[countries$Country == "Argentina",]
-philippines <- countries[countries$Country == "Philippines",]
+australia <- updated_countries[updated_countries$Country == "Australia",]
+argentina <- updated_countries[updated_countries$Country == "Argentina",]
+philippines <- updated_countries[updated_countries$Country == "Philippines",]
 
-australia$Date=with_tz(us_country$Date, "America/New_York")
-argentina$Date=with_tz(canada$Date, "America/New_York")
-philippines$Date=with_tz(mexico$Date, "America/New_York")
+australia$Date=with_tz(australia$month, "America/New_York")
+argentina$Date=with_tz(argentina$month, "America/New_York")
+philippines$Date=with_tz(philippines$month, "America/New_York")
 
-australia$per = australia$Confirmed/100000
-argentina$per = argentina$Confirmed/100000
-philippines$per = philippines$Confirmed/100000
-
-(ggplot(australia, aes(x = Date, y = `per`)) +
-  geom_line(aes(y = `per`, color = "Australia"))  +
+(ggplot(australia, aes(x = Date, y = `monthly_covid_cases`)) +
+  geom_line(aes(y = `monthly_covid_cases`, color = "Australia"))  +
   geom_line(data = argentina, aes(color = "Argentina")) +
   geom_line(data = philippines, aes(color = "Philippines")) +
   xlab('Date') +
   ylab('Count') +
-  ggtitle('Strictest Country Covid Cases per 100,000'))
+  ggtitle('Strictest Country Confirmed Covid Cases per Month'))
 
 
 ### Lax Countries
-egypt <- countries[countries$Country == "Egypt",]
-spain <- countries[countries$Country == "Spain",]
-srilanka <- countries[countries$Country == "Sri Lanka",]
+egypt <- updated_countries[updated_countries$Country == "Egypt",]
+spain <- updated_countries[updated_countries$Country == "Spain",]
+srilanka <- updated_countries[updated_countries$Country == "Sri Lanka",]
 
-egypt$Date=with_tz(us_country$Date, "America/New_York")
-spain$Date=with_tz(canada$Date, "America/New_York")
-srilanka$Date=with_tz(mexico$Date, "America/New_York")
+egypt$Date=with_tz(egypt$month, "America/New_York")
+spain$Date=with_tz(spain$month, "America/New_York")
+srilanka$Date=with_tz(srilanka$month, "America/New_York")
 
-egypt$per = pakistan$Confirmed/100000
-spain$per = argentina$Confirmed/100000
-srilanka$per = srilanka$Confirmed/100000
-
-(ggplot(egypt, aes(x = Date, y = `per`)) +
-  geom_line(aes(y = `per`, color = "Egypt"))  +
+(ggplot(egypt, aes(x = Date, y = `monthly_covid_cases`)) +
+  geom_line(aes(y = `monthly_covid_cases`, color = "Egypt"))  +
   geom_line(data = spain, aes(color = "Spain")) +
   geom_line(data = srilanka, aes(color = "Sri Lanka")) +
   xlab('Date') +
   ylab('Count') +
-  ggtitle('Comparable Country Covid Cases per 100,000'))
-```
+  ggtitle('Comparable Country Confirmed Covid Cases per Month'))
 
-```{r}
-countries
-
-countries %>% 
-    group_by(Country, month = lubridate::floor_date(Date, "month")) %>%
-    summarize(monthly_covid_cases = sum(Confirmed))
 
 ```
+
+
 
 # Research Question #3: How can we predict the number of covid cases with forecasting?
 ```{r RQ3 model 1}
@@ -485,4 +468,4 @@ ggplot(worldwide_data, aes(x=Date, y=Increase.rate))+
   scale_x_date(date_breaks = "2 months" , date_labels = "%b-%y")
 ```
 
-Based on the plots, we can see there is a slight seasonal trend with Confirmed COVID cases on the worldwide scale approximately every 3 months. There is the initial spike of increase rate at the start of the pandemic and another notable drastic increase in December 2020. 
+Based on the plots, we can see there is a slight seasonal trend with Confirmed COVID cases on the worldwide scale approximately every 3 months. There is the initial spike of increase rate at the start of the pandemic and another notable drastic increase in December 2020.
