@@ -1,7 +1,7 @@
 ---
 title: "STAT 420 Project"
 author: "Group 9"
-date: "11/10/2021"
+date: "11/23/2021"
 output: html_document
 ---
 
@@ -37,9 +37,8 @@ ggplot(covid, aes(x=Date, y=Deaths)) +
 ggplot(covid, aes(x=Date, y=Confirmed)) +
   geom_line() + xlab("Date") + ylab("Confirmed Cases") + 
   ggtitle("COVID Confirmed Cases Over Time")
-#We can see that over time the deaths are increasing as well as the confirmed COVID cases. 
 ```
-
+We can see that over time the deaths are increasing as well as the confirmed COVID cases.
 
 ```{r detrending through regression and differencing}
 y=world$Confirmed
@@ -93,17 +92,6 @@ pacf(fin)
 
 ```
 
-```{r moving averages}
-# Moving averages - day 50, 100, and 200:
-covid$Date <- as.Date(covid$Date, "%Y-%m-%d")
-plot(covid$Date, covid$Deaths, xaxt="n", type="l", col="gray", lwd=2)
-axis(1, covid$Date, format(covid$Date, "%m-%Y"))
-lines(covid$Date, zoo::rollmean(covid$Deaths, 50, align='right', fill=NA), col='red', lwd=2)
-lines(covid$Date, zoo::rollmean(covid$Deaths, 100, align='right', fill=NA), col='blue', lwd=2)
-lines(covid$Date, zoo::rollmean(covid$Deaths, 200, align='right', fill=NA), col='green', lwd=2)
-
-```
-
 ```{r exploratory model analysis}
 library(xts)
 covid_ts = xts(covid$Deaths, as.Date(covid$Date, format='%Y-%m-%d'))
@@ -111,71 +99,38 @@ covid_ts = xts(covid$Deaths, as.Date(covid$Date, format='%Y-%m-%d'))
 par(mfrow=c(2,2))
 plot(covid_ts)
 plot(log(covid_ts))
-plot(diff(log(covid_ts)))
-plot(diff(diff(log(covid_ts))))
+plot(diff(covid_ts))
+plot(diff(diff(covid_ts)))
 y = diff(diff(log(covid_ts)))
 
 par(mfrow=c(1, 2))
 acf(y, lag.max=10, na.action=na.pass)
 pacf(y, lag.max=10, na.action=na.pass)
+```
+From this, we can see that the data becomes stationary after the log is differenced twice. We can also see that there is no clear cut off for either ACF or PACF. 
 
+```{r MA and AR models}
+MA = arima(covid_ts, order = c(0, 2, 1))
+AR = arima(covid_ts, order = c(1,2,0))
+
+AIC(MA) # 11,144.27
+AIC(AR) # 11,144.54
 
 ```
-From this we can see that the data is not normally distributed and it becomes stationary after being differenced twice. We can also see that there is no clear cut off for the ACF nor PACF. 
-
-```{r MA model}
-MA = arima(covid_ts, order = c(0, 0, 1))
-MA_fit = covid_ts - residuals(MA)
-plot.ts(covid_ts, ylab="Deaths", main="COVID Deaths Over Time", lwd=2)
-points(MA_fit, type = "l", col = "red", lty = 2, lwd=2)
-
-MA_diff = arima(covid_ts, order = c(0, 1, 1))
-MA_diff_fit = covid_ts - residuals(MA_diff)
-plot.ts(covid_ts, ylab="Deaths", main="COVID Deaths Over Time", lwd=2)
-points(MA_diff_fit, type = "l", col = "green", lty = 2, lwd=2)
-```
-For the MA model we look at the date vs deaths. We can see that the MA(1) fit is not very good and that it looks much better after differencing. 
-
-```{r AR model}
-plot.ts(covid_ts, ylab="Deaths", main="COVID Deaths Over Time", lwd=2)
-AR <- arima(covid_ts, order = c(1,0,0))
-AR_fit <- covid_ts - residuals(AR)
-points(AR_fit, type = "l", col = "red", lty = 2, lwd=2)
-
-predict_AR <- predict(AR, n.ahead=12)
-predict_AR$pred
-
-
-
-```
-For the AR model we also look at the date vs deaths. We can see that the AR(1) fit looks pretty good but compare it to the MA model.
-
-```{r MA vs AR}
-
-AIC(AR) # 13,103.2
-AIC(MA_diff)  # 12,398.28
-AIC(MA) # 18,712.88
-
-par(mfrow=c(2,2))
-plot(MA_diff$residuals)
-plot(AR$residuals)
-
-hist(MA_diff$residuals)
-qqnorm(MA_diff$residuals)
-qqline(MA_diff$residuals)
-```
-We can also see that the residuals have some trend but look fairly normal. By comparing the AICs we can see that the MA(1) with differencing = 1 has the lowest AIC. However, the AICs are fairly large leading us to believe that neither MA or AR models are fit for this data. 
-
-## Statistical results and conclusions from models and methods 
+The AIC values for both models are high (over 11,000). Therefore, MA nor AR will not be appropriate for this data, and it may have a seasonal component to explore.
+ 
 
 # Research Question #1: Are confirmed cases linearly correlated with deaths?
 
 ```{r RQ1}
 cor(covid$Confirmed, covid$Deaths)
-plot(covid$Confirmed, covid$Deaths, xlab="Confirmed Cases", ylab="Deaths", main="COVID Confirmed Cases vs Deaths", type='l')
+ggplot(covid, aes(x=Confirmed, y=Deaths)) +
+  geom_line(size=2) + xlab("Confirmed Cases") + ylab("Deaths") + 
+  ggtitle("COVID Confirmed Cases vs Deaths")
 
 ```
-Yes, confirmed cases and deaths appear to have a linear relationship and have a high correlation of 0.997. 
+We can conclude that confirmed cases and deaths are highly correlated with a correlation coefficient of 0.997 and they visually have a strong linear relationship.
+
 
 # Research Question #2: How does the trend of covid cases change based on geographic location?
 
@@ -477,5 +432,4 @@ ggplot(worldwide_data, aes(x=Date, y=Increase.rate))+
 ```
 
 Based on the plots, we can see there is a slight seasonal trend with Confirmed COVID cases on the worldwide scale approximately every 3 months. There is the initial spike of increase rate at the start of the pandemic and another notable drastic increase in December 2020. 
-
 
