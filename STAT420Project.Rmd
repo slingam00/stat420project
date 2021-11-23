@@ -229,6 +229,60 @@ japan$per = japan$Confirmed/100000
 As seen by the graphs, there seems to be a high count of COVID-19 cases in the United States and India. While these two countries are in different geographic locations, it seems as though the quarantining policy wasn't strict enough, wasn't enforced properly, or wasn't followed in these two countries. Further research will need to be done to see if there is a change in trend based on geographic location. However, it is more likely based on this analysis that a refinement to the research question could be made to measure the difference in COVID-19 case trends in countries based on the strictness of their quarantining policies.
 
 
+```{r}
+### Strictest Countries
+australia <- countries[countries$Country == "Australia",]
+argentina <- countries[countries$Country == "Argentina",]
+philippines <- countries[countries$Country == "Philippines",]
+
+australia$Date=with_tz(us_country$Date, "America/New_York")
+argentina$Date=with_tz(canada$Date, "America/New_York")
+philippines$Date=with_tz(mexico$Date, "America/New_York")
+
+australia$per = australia$Confirmed/100000
+argentina$per = argentina$Confirmed/100000
+philippines$per = philippines$Confirmed/100000
+
+(ggplot(australia, aes(x = Date, y = `per`)) +
+  geom_line(aes(y = `per`, color = "Australia"))  +
+  geom_line(data = argentina, aes(color = "Argentina")) +
+  geom_line(data = philippines, aes(color = "Philippines")) +
+  xlab('Date') +
+  ylab('Count') +
+  ggtitle('Strictest Country Covid Cases per 100,000'))
+
+
+### Lax Countries
+egypt <- countries[countries$Country == "Egypt",]
+spain <- countries[countries$Country == "Spain",]
+srilanka <- countries[countries$Country == "Sri Lanka",]
+
+egypt$Date=with_tz(us_country$Date, "America/New_York")
+spain$Date=with_tz(canada$Date, "America/New_York")
+srilanka$Date=with_tz(mexico$Date, "America/New_York")
+
+egypt$per = pakistan$Confirmed/100000
+spain$per = argentina$Confirmed/100000
+srilanka$per = srilanka$Confirmed/100000
+
+(ggplot(egypt, aes(x = Date, y = `per`)) +
+  geom_line(aes(y = `per`, color = "Egypt"))  +
+  geom_line(data = spain, aes(color = "Spain")) +
+  geom_line(data = srilanka, aes(color = "Sri Lanka")) +
+  xlab('Date') +
+  ylab('Count') +
+  ggtitle('Comparable Country Covid Cases per 100,000'))
+```
+
+```{r}
+countries
+
+countries %>% 
+    group_by(Country, month = lubridate::floor_date(Date, "month")) %>%
+    summarize(monthly_covid_cases = sum(Confirmed))
+
+```
+
 # Research Question #3: How can we predict the number of covid cases with forecasting?
 ```{r RQ3 model 1}
 countries<- read_csv("data/countries-aggregated.csv")
